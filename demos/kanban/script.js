@@ -9,6 +9,8 @@
     CDN + "dompurify@3.2.6/dist/purify.min.js"
   ];
   var KEY = "demo-kanban:board";
+  var DATA = "public.kanban.board";
+  var POLL_MS = 15000;
   var LABELS = [
     { id: "red", name: "Срочно" },
     { id: "orange", name: "Баг" },
@@ -35,6 +37,8 @@
   };
 
   var board, root, query = "", listSorts = {}, colSort = null;
+  var PREF = "demo-kanban:view";
+  var mode = "local", shared = null, version = null, saving = false, dirty = false, saveTimer = null, pollTimer = null, who = null;
 
   function uid() { return Math.random().toString(36).slice(2, 10); }
 
@@ -86,11 +90,221 @@
       var b = normBoard(JSON.parse(localStorage.getItem(KEY) || "null"));
       if (b) return b;
     } catch (e) {}
-    return demoBoard();
+    return null;
   }
 
+  function editable() { return mode === "shared" || mode === "local"; }
+
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify(board)); } catch (e) {}
+    if (mode === "local") {
+      try { localStorage.setItem(KEY, JSON.stringify(board)); } catch (e) {}
+      return;
+    }
+    if (mode !== "shared") return;
+    dirty = true;
+    setSync("Сохраняем…");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(push, 500);
+  }
+
+  function api() { return window.onpress && window.onpress.data && window.onpress.session ? window.onpress : null; }
+
+  function boardFrom(res) {
+    var items = res && Array.isArray(res.items) ? res.items : [];
+    return normBoard(items[0]);
+  }
+
+  function push() {
+    if (saving || !dirty || mode !== "shared") return;
+    saving = true; dirty = false;
+    var sent = JSON.stringify(board);
+    api().data.put(DATA, [JSON.parse(sent)], version ? { if_sha256: version } : {})
+      .then(function (out) {
+        version = out && out.dataset ? out.dataset.sha256 : null;
+        setSync("Сохранено");
+      })
+      .catch(function (e) {
+        if (e && e.code === "dataset_changed") return refresh(true);
+        dirty = true;
+        setSync("Не удалось сохранить, повторим");
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(push, 5000);
+      })
+      .then(function () {
+        saving = false;
+        if (dirty) { clearTimeout(saveTimer); saveTimer = setTimeout(push, 300); }
+      });
+  }
+
+  function busy() {
+    var a = document.activeElement;
+    if (root.querySelector("dialog[open]")) return true;
+    return !!(a && root.contains(a) && (a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.isContentEditable));
+  }
+
+  function refresh(conflict) {
+    if (mode !== "shared" && mode !== "view") return Promise.resolve();
+    return api().data.get(DATA).then(function (res) {
+      if (mode !== "shared" && mode !== "view") return;
+      if (!conflict && (res.sha256 === version || saving || dirty || busy())) return;
+      var b = boardFrom(res);
+      if (!b) return;
+      shared = b; board = b; version = res.sha256; dirty = false;
+      render();
+      if (mode === "shared") setSync(conflict ? "Доску поменял коллега, показана свежая версия" : "Обновлено");
+    }).catch(function () {});
+  }
+
+  function setSync(text) {
+    var s = root && root.querySelector(".stk__sync");
+    if (s) s.textContent = text || "";
+  }
+
+  function clone(b) { return JSON.parse(JSON.stringify(b)); }
+
+  function connect() {
+    var a = api();
+    if (!a) { mode = "local"; board = load() || demoBoard(); return Promise.resolve(); }
+    return Promise.all([
+      a.session().catch(function () { return null; }),
+      a.data.get(DATA).then(function (res) { return { res: res }; }, function (e) { return { err: e }; })
+    ]).then(function (r) {
+      who = r[0] && r[0].logged_in ? r[0] : null;
+      var res = r[1].res;
+      if (!res && !(r[1].err && r[1].err.status === 404)) {
+        mode = "local"; board = load() || demoBoard();
+        return;
+      }
+      shared = (res && boardFrom(res)) || demoBoard();
+      version = res ? res.sha256 : null;
+      if (who && who.can_write) {
+        mode = "shared"; board = shared;
+        if (!res) { dirty = true; push(); }
+      } else {
+        var pref = null;
+        try { pref = localStorage.getItem(PREF); } catch (e) {}
+        var own = load();
+        if (pref === "local" && own) { mode = "local"; board = own; }
+        else { mode = "view"; board = clone(shared); }
+      }
+      pollTimer = setInterval(function () { if (!document.hidden) refresh(false); }, POLL_MS);
+      document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(false); });
+    });
+  }
+
+  function setPref(v) { try { localStorage.setItem(PREF, v); } catch (e) {} }
+
+  function toShared() {
+    if (!shared) return;
+    mode = "view"; board = clone(shared); query = ""; setPref("shared");
+    render();
+    refresh(false);
+  }
+
+  function toCopy(fork) {
+    var own = fork ? null : load();
+    board = own || clone(shared || board);
+    mode = "local"; query = ""; setPref("local");
+    save(); render();
+  }
+
+  function loginUrl() {
+    return "/enter/?redirect_to=" + encodeURIComponent(location.href);
+  }
+
+  var gateDlg = null;
+
+  function gate() {
+    if (gateDlg && gateDlg.open) return;
+    if (!gateDlg) {
+      gateDlg = el("dialog", "stk__gate");
+      gateDlg.setAttribute("aria-labelledby", "stk-gate-title");
+      var box = el("div", "stk__gate-box");
+      var t = el("h2", "stk__gate-title", "Это общая доска");
+      t.id = "stk-gate-title";
+      box.appendChild(t);
+      box.appendChild(el("p", "stk__gate-text", who
+        ? "Общую доску меняют администраторы сайта. Скопируйте ее себе и работайте со своей копией в этом браузере."
+        : "Войдите на сайт, чтобы редактировать доску, или скопируйте ее себе и работайте со своей копией в этом браузере."));
+      var row = el("div", "stk__gate-row");
+      if (!who) {
+        var login = el("a", "stk__btn stk__btn--primary", "Войти");
+        login.href = loginUrl();
+        row.appendChild(login);
+      }
+      var copy = el("button", "stk__btn" + (who ? " stk__btn--primary" : ""), "Скопировать себе");
+      copy.type = "button";
+      copy.addEventListener("click", function () { gateDlg.close(); toCopy(true); });
+      row.appendChild(copy);
+      var close = el("button", "stk__btn stk__btn--ghost", "Закрыть");
+      close.type = "button";
+      close.addEventListener("click", function () { gateDlg.close(); });
+      row.appendChild(close);
+      box.appendChild(row);
+      gateDlg.appendChild(box);
+      gateDlg.addEventListener("click", function (e) { if (e.target === gateDlg) gateDlg.close(); });
+      document.getElementById("stk").appendChild(gateDlg);
+    }
+    gateDlg.showModal();
+  }
+
+  var EDIT = ".stk__card, .stk__col-head, .stk__col-title, .stk__add, .stk__col-add, .stk__board-title, .stk__list, [data-edit]";
+
+  var press = null;
+
+  function editTarget(e) {
+    var t = e.target && e.target.closest ? e.target.closest(EDIT) : null;
+    return t && root.contains(t) ? t : null;
+  }
+
+  function guard(e) {
+    if (mode !== "view") { press = null; return; }
+    if (e.type === "pointermove") {
+      if (press && press.mouse && Math.abs(e.clientX - press.x) + Math.abs(e.clientY - press.y) > 6) { press = null; gate(); }
+      return;
+    }
+    if (e.type === "pointerup") {
+      if (press && Math.abs(e.clientX - press.x) + Math.abs(e.clientY - press.y) < 10) gate();
+      press = null;
+      return;
+    }
+    var t = editTarget(e);
+    if (!t) return;
+    if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+    if (e.type === "pointerdown") {
+      press = { x: e.clientX, y: e.clientY, mouse: e.pointerType !== "touch" };
+      if (press.mouse) e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "keydown" || e.type === "focusin") gate();
+  }
+
+  function modeBadge() {
+    if (mode === "shared") {
+      var wrap = el("span", "stk__mode stk__mode--shared");
+      wrap.appendChild(el("span", "stk__mode-dot"));
+      wrap.appendChild(el("span", null, "Общая доска"));
+      wrap.title = "Доска хранится в данных сайта, ее видят все посетители, а меняют администраторы сайта";
+      return wrap;
+    }
+    if (!shared) return el("span", "stk__mode", "Доска в этом браузере");
+    var sw = el("div", "stk__switch");
+    sw.setAttribute("role", "group");
+    sw.setAttribute("aria-label", "Какую доску показать");
+    var a = el("button", "stk__switch-btn" + (mode === "view" ? " is-on" : ""), "Общая доска");
+    var b = el("button", "stk__switch-btn" + (mode === "local" ? " is-on" : ""), "Моя копия");
+    a.type = b.type = "button";
+    a.setAttribute("aria-pressed", mode === "view" ? "true" : "false");
+    b.setAttribute("aria-pressed", mode === "local" ? "true" : "false");
+    a.title = "Одна доска для всех, ее меняют администраторы сайта";
+    b.title = "Ваша копия в этом браузере, ее можете менять вы";
+    a.addEventListener("click", function () { if (mode !== "view") toShared(); });
+    b.addEventListener("click", function () { if (mode !== "local") toCopy(false); });
+    sw.appendChild(a); sw.appendChild(b);
+    return sw;
   }
 
   function loadScript(src) {
@@ -226,7 +440,7 @@
     var grip = icon("grip"); grip.classList.add("stk__grip");
     head.appendChild(grip);
     var title = el("h2", "stk__col-title", col.title);
-    title.contentEditable = "true";
+    title.contentEditable = editable() ? "true" : "false";
     title.spellcheck = false;
     title.setAttribute("aria-label", "Название колонки");
     title.addEventListener("keydown", function (e) {
@@ -351,6 +565,7 @@
     var bar = el("div", "stk__sub");
     var title = el("input", "stk__board-title");
     title.value = board.title;
+    title.readOnly = !editable();
     title.setAttribute("aria-label", "Название доски");
     title.size = Math.max(6, board.title.length);
     title.addEventListener("input", function () { title.size = Math.max(6, title.value.length); });
@@ -358,8 +573,11 @@
     title.addEventListener("keydown", function (e) { if (e.key === "Enter") title.blur(); });
     bar.appendChild(title);
     bar.appendChild(el("span", "stk__stat", statText()));
+    bar.appendChild(modeBadge());
+    if (mode === "shared") bar.appendChild(el("span", "stk__sync"));
     var group = el("div", "stk__sub-actions");
     var addCol = btn("stk__chip-btn", "Колонка", "Добавить колонку", "plus");
+    addCol.setAttribute("data-edit", "");
     addCol.addEventListener("click", addColumn);
     var exp = btn("stk__chip-btn", "Экспорт", "Скачать доску в JSON", "down");
     exp.addEventListener("click", function () {
@@ -379,10 +597,12 @@
       file.value = "";
     });
     var imp = btn("stk__chip-btn", "Импорт", "Загрузить доску из JSON", "up");
+    imp.setAttribute("data-edit", "");
     imp.addEventListener("click", function () { file.click(); });
-    var reset = btn("stk__chip-btn", "Сбросить", "Вернуть демо-доску", "reset");
+    var reset = btn("stk__chip-btn", mode === "shared" ? "Сбросить к демо" : "Сбросить", "Вернуть демо-доску", "reset");
+    reset.hidden = mode === "view";
     reset.addEventListener("click", function () {
-      if (!confirm("Вернуть демо-доску? Текущие карточки пропадут.")) return;
+      if (!confirm(mode === "shared" ? "Вернуть общую доску к демо? Карточки пропадут у всех посетителей." : "Вернуть демо-доску? Текущие карточки пропадут.")) return;
       board = demoBoard(); query = ""; save(); render();
     });
     [addCol, exp, imp, reset, file].forEach(function (x) { group.appendChild(x); });
@@ -394,7 +614,7 @@
     listSorts[list.dataset.col] = new window.Sortable(list, {
       group: "stk-cards", animation: 180, easing: "cubic-bezier(.2,.8,.2,1)", delay: 140, delayOnTouchOnly: true,
       ghostClass: "stk__card--ghost", chosenClass: "stk__card--chosen", dragClass: "stk__card--drag",
-      draggable: ".stk__card", filter: ".stk__card--hidden", disabled: !!query,
+      draggable: ".stk__card", filter: ".stk__card--hidden", disabled: !!query || !editable(),
       onEnd: syncFromDom
     });
   }
@@ -418,7 +638,7 @@
       if (!col.cards.length && !empty) list.appendChild(el("div", "stk__empty", "Перетащите сюда карточку или добавьте новую"));
       else if (col.cards.length && empty) empty.remove();
     });
-    Object.keys(listSorts).forEach(function (k) { listSorts[k].option("disabled", !!query); });
+    Object.keys(listSorts).forEach(function (k) { listSorts[k].option("disabled", !!query || !editable()); });
     updateStat();
   }
 
@@ -440,6 +660,7 @@
     colSort = new window.Sortable(wrap, {
       animation: 180, handle: ".stk__col-head", draggable: ".stk__col", filter: ".stk__col-title,.stk__icon", preventOnFilter: false,
       ghostClass: "stk__col--ghost", direction: "horizontal", delay: 140, delayOnTouchOnly: true,
+      disabled: !editable(),
       onEnd: syncFromDom
     });
     updateStat();
@@ -681,9 +902,13 @@
     document.documentElement.classList.add("stk-lock");
     loadFont();
     setupIntro();
+    ["pointerdown", "click", "keydown", "focusin", "dragstart"].forEach(function (t) { root.addEventListener(t, guard, true); });
+    ["pointermove", "pointerup"].forEach(function (t) { window.addEventListener(t, guard, true); });
     LIBS.reduce(function (p, src) { return p.then(function () { return loadScript(src); }); }, Promise.resolve())
       .then(function () {
-        board = load();
+        return connect();
+      })
+      .then(function () {
         root.dataset.state = "ready";
         render();
       })
