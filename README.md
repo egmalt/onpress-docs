@@ -6,7 +6,7 @@ The live versions are in the demo catalog: https://onpress.pro/docs/v2/ru/guides
 
 ## What an OnPress frame is
 
-A frame is the layout of an OnPress page: HTML markup plus its own `.css` and `.js` files, stored on the site and edited through the API or the console. Any page can use a frame, and the frame decides what the page looks like. A frame may print the page text with `<!-- onpress/content /-->`, read site data through binds, include other frames, and load open-source libraries from a CDN.
+A frame is the layout of an OnPress page: HTML markup plus its own `.css` and `.js` files, stored on the site and edited through the API or the console. Any page can use a frame, and the frame decides what the page looks like. A frame may print the page text with `<!-- onpress/content /-->`, read site data through data fields (`data-op-bind`), include other frames, and load open-source libraries from a CDN.
 
 The demos use that model in the simplest way: the frame is the whole app. `frame.html` holds the markup, `style.css` and `script.js` are the frame files, and the page text (`page.md`) is the intro popup with the only H1 on the page. OnPress adds the frame CSS to `<head>` and the script before `</body>`.
 
@@ -89,7 +89,7 @@ A useful tool on its own address brings search traffic. People search for "kanba
 
 ## Private use, shared data and external APIs
 
-A demo can also be a private work tool. Set the page status to `private` and only the site administrators see it, or close the whole site with the `closed` setting and log in at `/enter/`. By default each app keeps its data in the visitor's `localStorage`, so every browser has its own copy. Shared data lives in the site data (`/data/{name}`): your agent or server writes it with the API token, and the frame renders it with `onpress/repeat` and binds. The frame script itself never gets a token, because the token carries all owner rights. A frame script can call any open HTTPS API that allows CORS; APIs with secret keys go through your agent and the site data.
+A demo can also be a private work tool. Set the page status to `private` and only the site administrators see it, or close the whole site with the `closed` setting and log in at `/enter/`. By default each app keeps its data in the visitor's `localStorage`, so every browser has its own copy. Shared data lives in the site data (`/data/{name}`): your agent or server writes it with the API token, and the frame renders it with `onpress/repeat` and data fields. The frame script itself never gets a token, because the token carries all owner rights. A frame script can call any open HTTPS API that allows CORS; APIs with secret keys go through your agent and the site data.
 
 Details, with links to the API reference, are in the OnPress guide section "Applications" (in Russian): https://onpress.pro/docs/v2/ru/guides/apps/
 
