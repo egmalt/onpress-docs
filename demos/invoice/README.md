@@ -1,8 +1,8 @@
-# Kvitok — invoice generator
+# Invoice generator
 
 An invoice generator for Russian payment invoices: a form on the left and a live A4 sheet on the right.
 
-![Kvitok — invoice generator](screenshot.webp)
+![Invoice generator](screenshot.webp)
 
 Live page: https://onpress.pro/docs/v2/ru/guides/demo/invoice/
 

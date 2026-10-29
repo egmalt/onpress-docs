@@ -1,8 +1,8 @@
-# Stopka — kanban board
+# Kanban board
 
 A Trello-style kanban board that runs on one page and keeps everything in the browser.
 
-![Stopka — kanban board](screenshot.webp)
+![Kanban board](screenshot.webp)
 
 Live page: https://onpress.pro/docs/v2/ru/guides/demo/kanban/
 

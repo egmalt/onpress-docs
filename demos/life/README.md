@@ -1,8 +1,8 @@
-# Zhitukha — life simulator
+# Life simulator
 
 A text life simulator: you live a whole life year by year, from birth to death, written as a diary in a school notebook. Every choice changes what comes next.
 
-![Zhitukha — life simulator](screenshot.webp)
+![Life simulator](screenshot.webp)
 
 Live page: https://onpress.pro/docs/v2/ru/guides/demo/life/
 
@@ -13,7 +13,7 @@ The interface is in Russian.
 - A life year by year from birth to death, shown as a handwritten diary
 - Education: university with 7 faculties, college, master's degree
 - 18 professions with career growth
-- Money: rent, mortgage, car, savings deposit, stocks, crypto, own business, credit card, bankruptcy
+- Money: rent, mortgage, car, savings deposit, stocks, buying cryptocurrency, own business, credit card, bankruptcy
 - Relationships: wedding, divorce, children, inheritance
 - Health and habits
 - Six stats: health, happiness, smarts, looks, relationships, money

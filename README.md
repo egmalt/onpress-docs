@@ -20,16 +20,16 @@ Frame guide and API reference (in Russian):
 
 | Demo | What it is | Live page | Source |
 | --- | --- | --- | --- |
-| Stopka (kanban) | Trello-style board: columns, cards, labels, due dates, checklists, Markdown | [live](https://onpress.pro/docs/v2/ru/guides/demo/kanban/) | [demos/kanban](demos/kanban/) |
+| Kanban board | Trello-style board: columns, cards, labels, due dates, checklists, Markdown | [live](https://onpress.pro/docs/v2/ru/guides/demo/kanban/) | [demos/kanban](demos/kanban/) |
 | Zhmykh (image converter) | Squoosh-style batch converter to WebP, AVIF, JPG, PNG and ICO | [live](https://onpress.pro/docs/v2/ru/guides/demo/converter/) | [demos/converter](demos/converter/) |
 | Blob Drop | Physics puzzle game: merge drops, power-ups, undo, high scores | [live](https://onpress.pro/docs/v2/ru/guides/demo/game/) | [demos/game](demos/game/) |
 | Whiteboard | Miro-style Excalidraw board: sticky notes, dotted grid, PNG/SVG export | [live](https://onpress.pro/docs/v2/ru/guides/demo/whiteboard/) | [demos/whiteboard](demos/whiteboard/) |
 | Spreadsheet | Google Sheets-style spreadsheet: HyperFormula engine, several sheets, CSV and XLSX | [live](https://onpress.pro/docs/v2/ru/guides/demo/sheets/) | [demos/sheets](demos/sheets/) |
 | BX-808 (drum machine) | TR-808-style sequencer with synthesized sounds, bass line and WAV export | [live](https://onpress.pro/docs/v2/ru/guides/demo/beats/) | [demos/beats](demos/beats/) |
-| Kvitok (invoice generator) | Russian invoice form with live A4 preview, PDF, QR code and drafts | [live](https://onpress.pro/docs/v2/ru/guides/demo/invoice/) | [demos/invoice](demos/invoice/) |
+| Invoice generator | Russian invoice form with live A4 preview, PDF, QR code and drafts | [live](https://onpress.pro/docs/v2/ru/guides/demo/invoice/) | [demos/invoice](demos/invoice/) |
 | SKANTEKST (OCR) | Text from images in Russian and English with tesseract.js | [live](https://onpress.pro/docs/v2/ru/guides/demo/ocr/) | [demos/ocr](demos/ocr/) |
 | Puls (web analytics) | Analytics dashboard: KPIs, channels, UTM with ROMI, world map, funnel, cohorts, MRR | [live](https://onpress.pro/docs/v2/ru/guides/demo/analytics/) | [demos/analytics](demos/analytics/) |
-| Zhitukha (life simulator) | Text life simulator: diary by years, education, 18 professions, money, family, 141 events, achievements | [live](https://onpress.pro/docs/v2/ru/guides/demo/life/) | [demos/life](demos/life/) |
+| Life simulator | Text life simulator: diary by years, education, 18 professions, money, family, 141 events, achievements | [live](https://onpress.pro/docs/v2/ru/guides/demo/life/) | [demos/life](demos/life/) |
 | Mortgage calculator (embedded) | Calculator inside an article, inserted with `<!-- frame/demo-embed-mortgage /-->` | [live](https://onpress.pro/docs/v2/ru/guides/demo/embedded/) | [demos/embed-mortgage](demos/embed-mortgage/) |
 
 The app interfaces are in Russian, like the site they run on.

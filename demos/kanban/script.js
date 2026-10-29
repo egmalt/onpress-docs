@@ -303,7 +303,7 @@
     var mark = el("span", "stk__mark"); mark.setAttribute("aria-hidden", "true");
     mark.innerHTML = "<i></i><i></i><i></i>";
     brand.appendChild(mark);
-    brand.appendChild(el("span", "stk__brand-name", "Стопка"));
+    brand.appendChild(el("span", "stk__brand-name", "Канбан-доска"));
     bar.appendChild(brand);
     var sw = el("label", "stk__search");
     sw.appendChild(icon("search"));

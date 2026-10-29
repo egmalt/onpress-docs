@@ -85,7 +85,7 @@ var ZH_DATA = {
     { id: "car", cat: "money", e: "🚗", t: "Машина", a: [18, 90], special: "car" },
     { id: "repay", cat: "money", e: "🧹", t: "Погасить кредиты", a: [18, 120], if: { debt: [1, 1e15], cash: [1000, 1e15] }, special: "repay" },
     { id: "lottery", cat: "money", e: "🎟️", t: "Купить лотерейный билет", a: [18, 120], cost: 300, special: "lottery" },
-    { id: "crypto", cat: "money", e: "🪙", t: "Вложиться в крипту", a: [18, 80], if: { cash: [50000, 1e15], no: "crypto" }, special: "crypto" },
+    { id: "crypto", cat: "money", e: "🪙", t: "Купить криптовалюту", a: [18, 80], if: { cash: [50000, 1e15], no: "crypto" }, special: "crypto" },
 
     { id: "meet", cat: "love", e: "💘", t: "Знакомиться", a: [16, 95], if: { partner: "none" }, special: "meet" },
     { id: "date", cat: "love", e: "🌹", t: "Сходить на свидание", a: [16, 120], if: { partner: "any" }, cost: 5000, eff: { love: 10, happy: 4, cash: -5000 }, r: ["Кино, кафе, прогулка по набережной. {p} смеял<ся|ась> над твоими шутками. Даже над той про пингвина.", "{p} затащил<|а> тебя в караоке. Соседний столик аплодировал стоя, хотя, возможно, просто уходил."] },
@@ -1863,7 +1863,7 @@ if (typeof module !== "undefined") module.exports = ZH;
       h += row("👛", "Наличные", M(p.cash));
       if (p.dep) h += row("🏦", "Вклад", M(p.dep));
       if (p.stocks) h += row("📊", "Акции", M(p.stocks));
-      if (p.crypto) h += row("🪙", "Крипта", M(p.crypto));
+      if (p.crypto) h += row("🪙", "Криптовалюта", M(p.crypto));
       if (p.biz) h += row("🏪", "Бизнес", p.biz);
       if (p.homeValue) h += row("🏠", "Жилье", M(p.homeValue));
       p.loans.forEach(function (l) { h += '<div class="zh-row is-debt"><span class="zh-row__k">🧾 ' + esc(l.t) + " · " + Math.round(l.rate * 100) + '%</span><span class="zh-row__v">−' + esc(M(l.bal)) + "</span></div>"; });
