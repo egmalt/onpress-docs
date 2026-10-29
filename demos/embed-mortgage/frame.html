@@ -1,0 +1,60 @@
+<div class="mcalc not-prose" data-mcalc>
+  <div class="mcalc__head">
+    <div class="mcalc__title">Ипотечный калькулятор</div>
+    <div class="mcalc__seg" role="radiogroup" aria-label="Тип платежа">
+      <button class="mcalc__seg-btn is-active" type="button" role="radio" aria-checked="true" data-type="annuity">Аннуитетный</button>
+      <button class="mcalc__seg-btn" type="button" role="radio" aria-checked="false" data-type="diff">Дифференцированный</button>
+    </div>
+  </div>
+  <div class="mcalc__grid">
+    <div class="mcalc__form">
+      <label class="mcalc__field">
+        <span class="mcalc__label">Стоимость жилья</span>
+        <span class="mcalc__box"><input class="mcalc__input" type="text" inputmode="numeric" autocomplete="off" data-field="price" value="8 000 000"><span class="mcalc__unit">₽</span></span>
+        <input class="mcalc__range" type="range" min="500000" max="50000000" step="100000" value="8000000" data-range="price" aria-label="Стоимость жилья">
+      </label>
+      <label class="mcalc__field">
+        <span class="mcalc__label">Первый взнос <span class="mcalc__chip" data-out="downPct">20%</span></span>
+        <span class="mcalc__box"><input class="mcalc__input" type="text" inputmode="numeric" autocomplete="off" data-field="down" value="1 600 000"><span class="mcalc__unit">₽</span></span>
+        <input class="mcalc__range" type="range" min="0" max="90" step="1" value="20" data-range="downPct" aria-label="Первый взнос в процентах">
+      </label>
+      <div class="mcalc__pair">
+        <label class="mcalc__field">
+          <span class="mcalc__label">Срок</span>
+          <span class="mcalc__box"><input class="mcalc__input" type="text" inputmode="numeric" autocomplete="off" data-field="years" value="20"><span class="mcalc__unit">лет</span></span>
+          <input class="mcalc__range" type="range" min="1" max="30" step="1" value="20" data-range="years" aria-label="Срок в годах">
+        </label>
+        <label class="mcalc__field">
+          <span class="mcalc__label">Ставка</span>
+          <span class="mcalc__box"><input class="mcalc__input" type="text" inputmode="decimal" autocomplete="off" data-field="rate" value="18"><span class="mcalc__unit">%</span></span>
+          <input class="mcalc__range" type="range" min="0" max="30" step="0.1" value="18" data-range="rate" aria-label="Ставка в процентах годовых">
+        </label>
+      </div>
+    </div>
+    <div class="mcalc__result" aria-live="polite">
+      <div class="mcalc__pay-label" data-out="payLabel">Ежемесячный платеж</div>
+      <div class="mcalc__pay" data-out="pay">—</div>
+      <div class="mcalc__rows">
+        <div class="mcalc__row"><span>Сумма кредита</span><span data-out="loan">—</span></div>
+        <div class="mcalc__row"><span><i class="mcalc__dot mcalc__dot--int"></i>Переплата</span><span data-out="interest">—</span></div>
+        <div class="mcalc__row"><span>Всего выплат</span><span data-out="total">—</span></div>
+        <div class="mcalc__row"><span>Нужный доход</span><span data-out="income">—</span></div>
+      </div>
+      <div class="mcalc__ratio" aria-hidden="true"><span class="mcalc__ratio-p" data-out="ratioP"></span><span class="mcalc__ratio-i" data-out="ratioI"></span></div>
+      <div class="mcalc__legend"><span><i class="mcalc__dot mcalc__dot--prin"></i>Долг <b data-out="sharePrin">—</b></span><span><i class="mcalc__dot mcalc__dot--int"></i>Проценты <b data-out="shareInt">—</b></span></div>
+    </div>
+  </div>
+  <div class="mcalc__chart">
+    <div class="mcalc__chart-head">
+      <span class="mcalc__chart-title">Выплаты по годам</span>
+      <span class="mcalc__chart-info" data-out="chartInfo">Наведите на столбец</span>
+    </div>
+    <div class="mcalc__bars" data-out="bars" tabindex="0" role="img" aria-label="Диаграмма выплат по годам: стрелки влево и вправо выбирают год"></div>
+  </div>
+  <details class="mcalc__sched">
+    <summary class="mcalc__sched-sum"><span>График платежей</span><span class="mcalc__seg mcalc__seg--sm" role="radiogroup" aria-label="Шаг графика"><button class="mcalc__seg-btn is-active" type="button" role="radio" aria-checked="true" data-step="year">По годам</button><button class="mcalc__seg-btn" type="button" role="radio" aria-checked="false" data-step="month">По месяцам</button></span></summary>
+    <div class="mcalc__table-wrap">
+      <div class="mcalc__table" data-out="table"></div>
+    </div>
+  </details>
+</div>

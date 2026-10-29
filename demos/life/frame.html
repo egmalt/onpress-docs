@@ -1,0 +1,72 @@
+<div class="zh" id="zh" data-op-reveal-skip>
+  <div class="zh__app" id="zhApp">
+    <header class="zh-top">
+      <a class="zh-top__back" href="/docs/v2/ru/guides/demo/" aria-label="Назад к каталогу демо" title="Назад к каталогу демо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+      <div class="zh-top__logo">Житуха<span class="zh-top__dot">.</span></div>
+      <button class="zh-top__who" id="zhWho" type="button" aria-label="Профиль и деньги"></button>
+      <div class="zh-top__tools">
+        <button class="zh-top__btn" id="zhLivesBtn" type="button" title="Прожитые жизни"><span aria-hidden="true">🪦</span><span class="zh-top__label">Жизни</span></button>
+        <button class="zh-top__btn" id="zhNewBtn" type="button" title="Начать новую жизнь"><span aria-hidden="true">🍼</span><span class="zh-top__label">Новая жизнь</span></button>
+      </div>
+    </header>
+    <section class="zh-stats" id="zhStats" aria-label="Показатели"></section>
+    <aside class="zh-side" id="zhSide" aria-label="Профиль"></aside>
+    <main class="zh-feed" id="zhFeed" aria-label="Дневник жизни">
+      <div class="zh-feed__paper" id="zhFeedIn"></div>
+    </main>
+    <aside class="zh-panel" id="zhPanel" aria-label="Решения и дела"></aside>
+  </div>
+
+  <div class="zh-sheet" id="zhSheet" hidden>
+    <div class="zh-sheet__bg" data-zh-close></div>
+    <div class="zh-sheet__card" role="dialog" aria-modal="true" aria-labelledby="zhSheetTitle">
+      <div class="zh-sheet__head">
+        <div class="zh-sheet__title" id="zhSheetTitle"></div>
+        <button class="zh-sheet__x" type="button" data-zh-close aria-label="Закрыть">✕</button>
+      </div>
+      <div class="zh-sheet__body" id="zhSheetBody"></div>
+    </div>
+  </div>
+
+  <div class="zh-over" id="zhBirth" hidden>
+    <div class="zh-note zh-note--birth" role="dialog" aria-modal="true" aria-labelledby="zhBirthTitle">
+      <div class="zh-note__tape"></div>
+      <div class="zh-note__kicker">Новая жизнь</div>
+      <div class="zh-note__title" id="zhBirthTitle">Кем родимся?</div>
+      <div class="zh-birth" id="zhBirthCard"></div>
+      <div class="zh-birth__sex" role="radiogroup" aria-label="Пол">
+        <button type="button" class="zh-chip" data-sex="m" role="radio">👦 Мальчик</button>
+        <button type="button" class="zh-chip" data-sex="f" role="radio">👧 Девочка</button>
+        <button type="button" class="zh-chip" data-sex="" role="radio">🎲 Как выпадет</button>
+      </div>
+      <form class="zh-birth__code" id="zhCodeForm">
+        <label for="zhCode">Код жизни</label>
+        <input id="zhCode" maxlength="8" autocomplete="off" spellcheck="false" inputmode="text">
+        <button class="zh-chip" type="submit">Применить</button>
+      </form>
+      <div class="zh-note__actions">
+        <button class="zh-btn zh-btn--ghost" id="zhReroll" type="button">🎲 Другой человек</button>
+        <button class="zh-btn" id="zhBorn" type="button">Родиться</button>
+      </div>
+      <button class="zh-birth__cancel" id="zhBirthCancel" type="button" hidden>Вернуться к текущей жизни</button>
+    </div>
+  </div>
+
+  <div class="zh-over zh-over--final" id="zhFinal" hidden>
+    <div class="zh-final" id="zhFinalCard" role="dialog" aria-modal="true" aria-label="Итог жизни"></div>
+  </div>
+
+  <div class="zh-over zh-over--intro is-open" id="zhIntro">
+    <div class="zh-note zh-note--intro" role="dialog" aria-modal="true" aria-labelledby="zhIntroTitle">
+      <div class="zh-note__tape"></div>
+      <h1 class="zh-note__h1" id="zhIntroTitle" data-op-bind='{"text":"page.title"}'>Житуха — симулятор жизни</h1>
+      <div class="zh-note__text"><!-- onpress/content /--></div>
+      <div class="zh-note__actions">
+        <a class="zh-btn zh-btn--ghost" href="/docs/v2/ru/guides/demo/">Назад</a>
+        <button class="zh-btn" id="zhIntroGo" type="button">Начать</button>
+      </div>
+      <div class="zh-note__hint">Enter или Esc — начать</div>
+    </div>
+  </div>
+  <div class="zh-toast" id="zhToast" role="status" aria-live="polite"></div>
+</div>

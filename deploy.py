@@ -12,6 +12,7 @@ Steps:
     1. POST /frames (or PUT /frames/{slug} if the frame exists) with frame.html
     2. PUT /frames/{slug}/files?name=... for every .css and .js file
     3. POST /pages/markdown with page.md and frame "demo-<name>"
+       (embedded demos have no page.md: insert <!-- frame/demo-<name> /--> into any page)
 
 Only the Python standard library is used.
 """
@@ -113,6 +114,11 @@ def main():
                 status, resp = call(token, base, 'PUT', f'/frames/{slug}/files?{q}',
                                     {'content': read(name), 'dry_run': args.dry_run})
                 report(f'PUT /frames/{slug}/files {name}', status, resp)
+
+    if not os.path.isfile(os.path.join(folder, 'page.md')):
+        print(f'Embedded frame: put <!-- frame/{slug} /--> into the markdown of any page.')
+        print('example.md is a sample article with this line; publish it with POST /pages/markdown if you want.')
+        return
 
     if args.dry_run:
         print('Dry run: page not published.')

@@ -1,6 +1,6 @@
 # OnPress frame demos
 
-Nine full-screen web apps built as [OnPress](https://onpress.pro) frames: a kanban board, an image converter, a game, a whiteboard, a spreadsheet, a drum machine, an invoice generator, an OCR scanner and a web analytics dashboard. Each one is a single frame, runs entirely in the browser and keeps user data in `localStorage`. No server code, no build step.
+Ten full-screen web apps built as [OnPress](https://onpress.pro) frames: a kanban board, an image converter, a game, a whiteboard, a spreadsheet, a drum machine, an invoice generator, an OCR scanner, a web analytics dashboard and a life simulator. One more demo, a mortgage calculator, shows a frame embedded inside an ordinary article. Each one is a single frame, runs entirely in the browser and keeps user data in `localStorage`. No server code, no build step.
 
 The live versions are in the demo catalog: https://onpress.pro/docs/v2/ru/guides/demo/
 
@@ -29,6 +29,8 @@ Frame guide and API reference (in Russian):
 | Kvitok (invoice generator) | Russian invoice form with live A4 preview, PDF, QR code and drafts | [live](https://onpress.pro/docs/v2/ru/guides/demo/invoice/) | [demos/invoice](demos/invoice/) |
 | SKANTEKST (OCR) | Text from images in Russian and English with tesseract.js | [live](https://onpress.pro/docs/v2/ru/guides/demo/ocr/) | [demos/ocr](demos/ocr/) |
 | Puls (web analytics) | Analytics dashboard: KPIs, channels, UTM with ROMI, world map, funnel, cohorts, MRR | [live](https://onpress.pro/docs/v2/ru/guides/demo/analytics/) | [demos/analytics](demos/analytics/) |
+| Zhitukha (life simulator) | Text life simulator: diary by years, education, 18 professions, money, family, 141 events, achievements | [live](https://onpress.pro/docs/v2/ru/guides/demo/life/) | [demos/life](demos/life/) |
+| Mortgage calculator (embedded) | Calculator inside an article, inserted with `<!-- frame/demo-embed-mortgage /-->` | [live](https://onpress.pro/docs/v2/ru/guides/demo/embedded/) | [demos/embed-mortgage](demos/embed-mortgage/) |
 
 The app interfaces are in Russian, like the site they run on.
 
@@ -79,7 +81,7 @@ jq -n --rawfile md demos/kanban/page.md '{markdown: $md, frame: "demo-kanban"}' 
     -H "Authorization: Bearer $OP_TOKEN" -H 'Content-Type: application/json' -d @-
 ```
 
-Frame writes accept `"dry_run": true` to check the markup without saving it. OnPress rejects frame markup and files that contain comments (`422 comments_not_allowed`), so keep the sources comment-free when you edit them. A file is limited to 512 KB, a frame to 16 files. The full list of fields and error codes is in the [frames reference](https://onpress.pro/docs/v2/ru/reference/frames/) and the [pages reference](https://onpress.pro/docs/v2/ru/reference/pages/).
+Frame writes accept `"dry_run": true` to check the markup without saving it. A file is limited to 512 KB, a frame to 16 files. The full list of fields and error codes is in the [frames reference](https://onpress.pro/docs/v2/ru/reference/frames/) and the [pages reference](https://onpress.pro/docs/v2/ru/reference/pages/).
 
 ## Use a demo as an SEO page
 
@@ -98,6 +100,7 @@ demos/<name>/frame.html      frame markup
 demos/<name>/style.css       frame stylesheet
 demos/<name>/script.js       frame script
 demos/<name>/page.md         page properties and the intro popup text
+demos/embed-mortgage/example.md  sample article with the embedded calculator
 demos/<name>/README.md       what the demo does, libraries, screenshot
 deploy.py                    deploy any demo to your OnPress site
 ```
