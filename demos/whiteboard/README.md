@@ -1,6 +1,6 @@
 # Whiteboard
 
-An Excalidraw-based whiteboard on an infinite canvas, embedded in an OnPress frame.
+A bright Miro and FigJam style whiteboard built on Excalidraw, embedded in an OnPress frame. It opens with a "Brainstorm" starter scene.
 
 ![Whiteboard](screenshot.webp)
 
@@ -10,23 +10,25 @@ The interface is in Russian.
 
 ## Features
 
-- Infinite canvas with pan and zoom
-- Shapes, arrows with binding, lines, freehand drawing, text, images, eraser
-- Hand-drawn style, colors and stroke widths
-- Undo and redo, keyboard shortcuts
+- Excalidraw with the Inter font and `roughness: 0`: clean shapes instead of the hand-drawn look
+- Sticky notes in six colors from the sticker bar at the bottom
+- Dotted grid background, light theme only
+- Colored toolbar: shapes, arrows with binding, lines, freehand drawing, text, images, eraser, frames
+- Starter scene "Brainstorm: landing launch" with stickers and a small flowchart
+- Pan and zoom on an infinite canvas, undo and redo, keyboard shortcuts
 - Autosave of the scene in `localStorage`
 - Export to PNG and SVG, scene file import and export
-- Russian interface
 
 ## Libraries
 
-Loaded at runtime from public CDNs with pinned versions (unpkg unless noted). Nothing is bundled in this folder.
+Loaded at runtime from unpkg with pinned versions. Nothing is bundled in this folder.
 
 | Library | Version | Used for |
 | --- | --- | --- |
 | React | 18.3.1 | runtime for Excalidraw |
 | ReactDOM | 18.3.1 | runtime for Excalidraw |
 | @excalidraw/excalidraw | 0.17.6 | the editor |
+| @fontsource/inter | 5.1.0 | Inter font |
 
 ## Files
 

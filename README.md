@@ -23,7 +23,7 @@ Frame guide and API reference (in Russian):
 | Stopka (kanban) | Trello-style board: columns, cards, labels, due dates, checklists, Markdown | [live](https://onpress.pro/docs/v2/ru/guides/demo/kanban/) | [demos/kanban](demos/kanban/) |
 | Zhmykh (image converter) | Squoosh-style batch converter to WebP, AVIF, JPG, PNG and ICO | [live](https://onpress.pro/docs/v2/ru/guides/demo/converter/) | [demos/converter](demos/converter/) |
 | Blob Drop | Physics puzzle game: merge drops, power-ups, undo, high scores | [live](https://onpress.pro/docs/v2/ru/guides/demo/game/) | [demos/game](demos/game/) |
-| Whiteboard | Excalidraw on an infinite canvas with autosave and PNG/SVG export | [live](https://onpress.pro/docs/v2/ru/guides/demo/whiteboard/) | [demos/whiteboard](demos/whiteboard/) |
+| Whiteboard | Miro-style Excalidraw board: sticky notes, dotted grid, PNG/SVG export | [live](https://onpress.pro/docs/v2/ru/guides/demo/whiteboard/) | [demos/whiteboard](demos/whiteboard/) |
 | Spreadsheet | Google Sheets-style spreadsheet: HyperFormula engine, several sheets, CSV and XLSX | [live](https://onpress.pro/docs/v2/ru/guides/demo/sheets/) | [demos/sheets](demos/sheets/) |
 | BX-808 (drum machine) | TR-808-style sequencer with synthesized sounds, bass line and WAV export | [live](https://onpress.pro/docs/v2/ru/guides/demo/beats/) | [demos/beats](demos/beats/) |
 | Kvitok (invoice generator) | Russian invoice form with live A4 preview, PDF, QR code and drafts | [live](https://onpress.pro/docs/v2/ru/guides/demo/invoice/) | [demos/invoice](demos/invoice/) |

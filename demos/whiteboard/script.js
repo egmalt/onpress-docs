@@ -8,16 +8,36 @@
     CDN + "react-dom@18.3.1/umd/react-dom.production.min.js",
     CDN + "@excalidraw/excalidraw@" + VERSION + "/dist/excalidraw.production.min.js"
   ];
-  var KEY_SCENE = "demo-whiteboard:scene";
-  var KEY_VIEW = "demo-whiteboard:view";
-  var KEY_THEME = "demo-whiteboard:theme";
+  var KEY_SCENE = "demo-whiteboard:v2:scene";
+  var KEY_VIEW = "demo-whiteboard:v2:view";
+  var GRID = 24;
+  var FONT = 2;
+  var INK = "#1e1e2e";
+  var STICKERS = [
+    { name: "Желтый", color: "#ffe066" },
+    { name: "Розовый", color: "#ffa8d2" },
+    { name: "Зеленый", color: "#9ee8a0" },
+    { name: "Голубой", color: "#9fd3ff" },
+    { name: "Сиреневый", color: "#c9b6ff" },
+    { name: "Оранжевый", color: "#ffbf80" }
+  ];
+  var DEFAULTS = {
+    currentItemRoughness: 0,
+    currentItemFontFamily: FONT,
+    currentItemFontSize: 20,
+    currentItemStrokeWidth: 2,
+    currentItemStrokeColor: INK,
+    currentItemBackgroundColor: "transparent",
+    currentItemFillStyle: "solid",
+    currentItemRoundness: "round",
+    currentItemEndArrowhead: "triangle",
+    viewBackgroundColor: "transparent"
+  };
   var VIEW_KEYS = [
-    "scrollX", "scrollY", "zoom", "gridSize", "viewBackgroundColor", "zenModeEnabled",
-    "objectsSnapModeEnabled", "currentItemStrokeColor", "currentItemBackgroundColor",
-    "currentItemFillStyle", "currentItemStrokeWidth", "currentItemStrokeStyle",
-    "currentItemRoughness", "currentItemOpacity", "currentItemFontFamily", "currentItemFontSize",
-    "currentItemTextAlign", "currentItemStartArrowhead", "currentItemEndArrowhead",
-    "currentItemRoundness", "currentChartType", "name"
+    "scrollX", "scrollY", "zoom", "objectsSnapModeEnabled", "currentItemStrokeColor", "currentItemBackgroundColor",
+    "currentItemFillStyle", "currentItemStrokeWidth", "currentItemStrokeStyle", "currentItemRoughness",
+    "currentItemOpacity", "currentItemFontFamily", "currentItemFontSize", "currentItemTextAlign",
+    "currentItemStartArrowhead", "currentItemEndArrowhead", "currentItemRoundness"
   ];
 
   function pickView(appState) {
@@ -54,9 +74,12 @@
     }
   }
 
-  function resolveTheme(stored, systemDark) {
-    if (stored === "dark" || stored === "light") return stored;
-    return systemDark ? "dark" : "light";
+  function gridStyle(scrollX, scrollY, zoom) {
+    var size = GRID * zoom;
+    while (size < 12) size *= 2;
+    var px = ((scrollX * zoom) % size + size) % size;
+    var py = ((scrollY * zoom) % size + size) % size;
+    return { size: size.toFixed(2) + "px " + size.toFixed(2) + "px", position: px.toFixed(2) + "px " + py.toFixed(2) + "px" };
   }
 
   function debounce(fn, ms) {
@@ -70,7 +93,57 @@
     return d;
   }
 
-  var helpers = { pickView: pickView, parseScene: parseScene, parseView: parseView, resolveTheme: resolveTheme, debounce: debounce };
+  function sticker(id, x, y, color, text, size) {
+    size = size || 200;
+    return {
+      type: "rectangle", id: id || undefined, x: x, y: y, width: size, height: size,
+      backgroundColor: color, fillStyle: "solid", strokeColor: "transparent", strokeWidth: 1,
+      roughness: 0, roundness: null,
+      label: { text: text, fontSize: 20, fontFamily: FONT, strokeColor: INK, textAlign: "center", verticalAlign: "middle" }
+    };
+  }
+
+  function shape(type, id, x, y, w, h, color, text) {
+    return {
+      type: type, id: id, x: x, y: y, width: w, height: h,
+      backgroundColor: color, fillStyle: "solid", strokeColor: INK, strokeWidth: 2,
+      roughness: 0, roundness: type === "rectangle" ? { type: 3 } : null,
+      label: { text: text, fontSize: 20, fontFamily: FONT, strokeColor: INK }
+    };
+  }
+
+  function arrow(id, x, y, w, h, from, to, color) {
+    return {
+      type: "arrow", id: id, x: x, y: y, width: w, height: h,
+      strokeColor: color || INK, strokeWidth: 2, roughness: 0, endArrowhead: "triangle",
+      start: { id: from }, end: { id: to }
+    };
+  }
+
+  function starterSkeleton() {
+    var els = [
+      sticker("s-goal", 60, 90, "#ffe066", "Цель: 1000 заявок за первый месяц"),
+      sticker("s-who", 290, 90, "#ffa8d2", "Кто наш клиент? Малый бизнес без дизайнера"),
+      sticker("s-idea", 520, 90, "#9ee8a0", "Идея: видео-демо на первом экране"),
+      sticker("s-risk", 750, 90, "#9fd3ff", "Риск: долгая загрузка на телефоне"),
+      sticker("s-ask", 980, 90, "#c9b6ff", "Вопрос: нужен ли A/B тест?"),
+      shape("rectangle", "f-research", 90, 420, 240, 110, "#9fd3ff", "Исследование"),
+      shape("diamond", "f-decide", 470, 395, 240, 160, "#ffbf80", "Решение"),
+      shape("ellipse", "f-launch", 850, 420, 260, 110, "#9ee8a0", "Запуск"),
+      arrow("a-1", 330, 475, 140, 0, "f-research", "f-decide"),
+      arrow("a-2", 710, 475, 140, 0, "f-decide", "f-launch"),
+      arrow("a-3", 850, 290, 120, 130, "s-risk", "f-launch", "#e8336d"),
+      {
+        type: "text", id: "t-hint", x: 60, y: 600, text: "Двойной клик по стикеру или фигуре, чтобы писать. Новые стикеры на панели внизу.",
+        fontSize: 18, fontFamily: FONT, strokeColor: "#55526e"
+      }
+    ];
+    var ids = els.map(function (e) { return e.id; });
+    els.push({ type: "frame", id: "frame-1", x: 20, y: 20, width: 1220, height: 640, name: "Мозговой штурм: запуск лендинга", children: ids });
+    return els;
+  }
+
+  var helpers = { pickView: pickView, parseScene: parseScene, parseView: parseView, gridStyle: gridStyle, debounce: debounce, starterSkeleton: starterSkeleton };
   if (typeof module === "object" && module.exports) { module.exports = helpers; return; }
 
   var doc = root.document;
@@ -80,7 +153,6 @@
 
   function get(k) { try { return store ? store.getItem(k) : null; } catch (e) { return null; } }
   function set(k, v) { try { if (store) store.setItem(k, v); return true; } catch (e) { return false; } }
-  function del(k) { try { if (store) store.removeItem(k); } catch (e) {} }
 
   function loadScript(src) {
     return new Promise(function (resolve, reject) {
@@ -105,6 +177,12 @@
       });
     });
     return chain;
+  }
+
+  function loadFonts() {
+    if (!doc.fonts || !doc.fonts.load) return Promise.resolve();
+    var wait = Promise.all([doc.fonts.load("20px Helvetica", "Aa"), doc.fonts.load("20px Helvetica", "Яя")]).catch(function () {});
+    return Promise.race([wait, new Promise(function (r) { setTimeout(r, 4000); })]);
   }
 
   function showState(host, kind, text) {
@@ -132,20 +210,13 @@
     host.appendChild(box);
   }
 
-  var mqDark = root.matchMedia ? root.matchMedia("(prefers-color-scheme: dark)") : null;
-  var intro = { open: false, onClose: null };
-
-  function applyTheme(theme) {
-    var app = doc.getElementById("demo-wb");
-    if (!app) return;
-    app.classList.toggle("demo-wb--dark", theme === "dark");
-    doc.documentElement.style.background = theme === "dark" ? "#121212" : "#fff";
-  }
+  var intro = { open: false };
 
   function setupIntro() {
     var box = doc.getElementById("demo-wb-intro");
     if (!box) return;
     var btn = doc.getElementById("demo-wb-open");
+    var back = box.querySelector(".demo-wb__btn--ghost");
     var title = box.querySelector("h1");
     if (title) { if (!title.id) title.id = "demo-wb-title"; box.setAttribute("aria-labelledby", title.id); }
     intro.open = true;
@@ -156,19 +227,16 @@
       root.removeEventListener("keydown", onKey, true);
       var target = doc.querySelector("#demo-wb-root .excalidraw") || doc.getElementById("demo-wb-root");
       if (target) { if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1"); try { target.focus({ preventScroll: true }); } catch (e) {} }
-      if (intro.onClose) intro.onClose();
     }
     function onKey(e) {
       if (!intro.open) return;
       var tag = e.target && e.target.tagName;
       if (e.key === "Escape" || (e.key === "Enter" && tag !== "A")) { e.preventDefault(); e.stopPropagation(); close(); return; }
       if (e.key === "Tab") {
-        var items = [box.querySelector(".demo-wb__btn--ghost"), btn].filter(Boolean);
+        var items = [back, btn].filter(Boolean);
         var i = items.indexOf(doc.activeElement);
         e.preventDefault();
         items[(i + (e.shiftKey ? -1 : 1) + items.length) % items.length].focus();
-        e.stopPropagation();
-        return;
       }
       e.stopPropagation();
     }
@@ -181,43 +249,46 @@
     var ReactDOM = root.ReactDOM;
     var X = root.ExcalidrawLib;
     var h = React.createElement;
-    var mq = mqDark;
 
     var scene = parseScene(get(KEY_SCENE));
     var view = parseView(get(KEY_VIEW));
-    var storedTheme = get(KEY_THEME);
-    var initialTheme = resolveTheme(storedTheme, mq && mq.matches);
-    view.theme = initialTheme;
-    if (!view.name) view.name = "Доска";
+    var appState = Object.assign({}, DEFAULTS, view, { theme: "light", viewBackgroundColor: "transparent", name: "Доска" });
+    var elements = scene ? scene.elements : X.convertToExcalidrawElements(starterSkeleton(), { regenerateIds: true });
+    var fresh = !scene;
 
     var initialData = {
-      elements: scene ? scene.elements : [],
+      elements: elements,
       files: scene ? scene.files : {},
-      appState: view,
-      scrollToContent: !!(scene && scene.elements.length && view.zoom === undefined)
+      appState: appState,
+      scrollToContent: fresh || (elements.length > 0 && view.zoom === undefined)
     };
+
+    var gridKey = "";
+    function syncGrid(st) {
+      var z = st.zoom && st.zoom.value ? st.zoom.value : 1;
+      var g = gridStyle(st.scrollX || 0, st.scrollY || 0, z);
+      var k = g.size + "|" + g.position;
+      if (k === gridKey) return;
+      gridKey = k;
+      host.style.backgroundSize = g.size;
+      host.style.backgroundPosition = g.position;
+    }
 
     function App() {
       var apiRef = React.useRef(null);
-      var themeRef = React.useRef(initialTheme);
       var lastSceneRef = React.useRef(null);
       var savedState = React.useState(false);
       var saved = savedState[0], setSaved = savedState[1];
       var hideTimer = React.useRef(null);
+      var addCount = React.useRef(0);
 
       var save = React.useMemo(function () {
-        return debounce(function (elements, appState, files) {
-          var ok = true;
-          var version = X.getSceneVersion(elements);
-          var fileIds = Object.keys(files || {}).join(",");
-          var sig = version + "|" + fileIds;
+        return debounce(function (els, st, files) {
+          var version = X.getSceneVersion(els);
+          var sig = version + "|" + Object.keys(files || {}).join(",");
           if (sig !== lastSceneRef.current) {
-            var json = X.serializeAsJSON(elements, appState, files, "local");
-            ok = set(KEY_SCENE, json);
-            if (!ok) {
-              var noFiles = X.serializeAsJSON(elements, appState, {}, "local");
-              ok = set(KEY_SCENE, noFiles);
-            }
+            var ok = set(KEY_SCENE, X.serializeAsJSON(els, st, files, "local"));
+            if (!ok) ok = set(KEY_SCENE, X.serializeAsJSON(els, st, {}, "local"));
             if (ok) {
               var first = lastSceneRef.current === null;
               lastSceneRef.current = sig;
@@ -228,7 +299,7 @@
               }
             }
           }
-          set(KEY_VIEW, JSON.stringify(pickView(appState)));
+          set(KEY_VIEW, JSON.stringify(pickView(st)));
         }, 350);
       }, []);
 
@@ -237,92 +308,94 @@
           var api = apiRef.current;
           if (!api) return;
           save.flush();
-          var els = api.getSceneElementsIncludingDeleted();
-          set(KEY_SCENE, X.serializeAsJSON(els, api.getAppState(), api.getFiles(), "local"));
+          set(KEY_SCENE, X.serializeAsJSON(api.getSceneElementsIncludingDeleted(), api.getAppState(), api.getFiles(), "local"));
           set(KEY_VIEW, JSON.stringify(pickView(api.getAppState())));
         }
         root.addEventListener("pagehide", flushNow);
         return function () { root.removeEventListener("pagehide", flushNow); };
       }, [save]);
 
-      React.useEffect(function () {
-        if (!mq) return;
-        function onSystem(e) {
-          if (get(KEY_THEME)) return;
-          var t = e.matches ? "dark" : "light";
-          themeRef.current = t;
-          applyTheme(t);
-          if (apiRef.current) apiRef.current.updateScene({ appState: { theme: t } });
-        }
-        if (mq.addEventListener) mq.addEventListener("change", onSystem); else mq.addListener(onSystem);
-        return function () { if (mq.removeEventListener) mq.removeEventListener("change", onSystem); else mq.removeListener(onSystem); };
-      }, []);
+      function onChange(els, st, files) {
+        syncGrid(st);
+        save(els, st, files);
+      }
 
-      function onChange(elements, appState, files) {
-        if (appState.theme !== themeRef.current) {
-          themeRef.current = appState.theme;
-          applyTheme(appState.theme);
-          var sys = resolveTheme(null, mq && mq.matches);
-          if (appState.theme === sys) del(KEY_THEME); else set(KEY_THEME, appState.theme);
-        }
-        save(elements, appState, files);
+      function addSticker(color) {
+        var api = apiRef.current;
+        if (!api) return;
+        var st = api.getAppState();
+        var z = st.zoom && st.zoom.value ? st.zoom.value : 1;
+        var n = addCount.current++ % 6;
+        var cx = -st.scrollX + st.width / 2 / z - 100 + n * 24;
+        var cy = -st.scrollY + st.height / 2 / z - 100 + n * 24;
+        var made = X.convertToExcalidrawElements([sticker(null, cx, cy, color, "Новая идея")], { regenerateIds: true });
+        var rect = made.filter(function (e) { return e.type === "rectangle"; })[0];
+        var sel = {};
+        if (rect) sel[rect.id] = true;
+        api.updateScene({
+          elements: api.getSceneElementsIncludingDeleted().concat(made),
+          appState: { selectedElementIds: sel, activeTool: { type: "selection", customType: null, lastActiveTool: null, locked: false } }
+        });
       }
 
       function topRight() {
-        return h("span", { className: "demo-wb__saved" + (saved ? " demo-wb__saved--on" : ""), "aria-live": "polite" }, saved ? "Сохранено в браузере" : "");
+        return h("span", { className: "demo-wb__saved" + (saved ? " demo-wb__saved--on" : ""), "aria-live": "polite" }, saved ? "Сохранено" : "");
       }
 
       var MM = X.MainMenu;
-      var WS = X.WelcomeScreen;
 
-      return h(X.Excalidraw, {
-        excalidrawAPI: function (api) { apiRef.current = api; },
-        initialData: initialData,
-        onChange: onChange,
-        langCode: "ru-RU",
-        name: "Доска",
-        handleKeyboardGlobally: true,
-        autoFocus: false,
-        renderTopRightUI: topRight,
-        UIOptions: { canvasActions: { loadScene: true, export: { saveFileToDisk: true }, saveAsImage: true, clearCanvas: true, changeViewBackgroundColor: true, toggleTheme: true } }
-      },
-        h(MM, null,
-          h(MM.DefaultItems.LoadScene),
-          h(MM.DefaultItems.SaveToActiveFile),
-          h(MM.DefaultItems.Export),
-          h(MM.DefaultItems.SaveAsImage),
-          h(MM.DefaultItems.Help),
-          h(MM.DefaultItems.ClearCanvas),
-          h(MM.Separator),
-          h(MM.DefaultItems.ToggleTheme),
-          h(MM.DefaultItems.ChangeCanvasBackground)
+      return h(React.Fragment, null,
+        h("div", { className: "demo-wb__stickers", role: "toolbar", "aria-label": "Стикеры" },
+          h("p", { className: "demo-wb__stickers-title" }, "Стикер"),
+          STICKERS.map(function (s) {
+            return h("button", {
+              key: s.color, type: "button", className: "demo-wb__sticker", style: { "--c": s.color },
+              title: s.name + " стикер", "aria-label": "Добавить " + s.name.toLowerCase() + " стикер",
+              onClick: function () { addSticker(s.color); }
+            });
+          })
         ),
-        h(WS, null,
-          h(WS.Hints.MenuHint, null, "Экспорт в PNG и SVG, файл сцены, тема"),
-          h(WS.Hints.ToolbarHint, null, "Выберите инструмент и начните рисовать"),
-          h(WS.Hints.HelpHint, null, "Горячие клавиши и справка"),
-          h(WS.Center, null,
-            h(WS.Center.Logo, null, "Доска"),
-            h(WS.Center.Heading, null, "Схемы, наброски и диаграммы. Все сохраняется в этом браузере."),
-            h(WS.Center.Menu, null,
-              h(WS.Center.MenuItemLoadScene),
-              h(WS.Center.MenuItemHelp)
-            )
+        h(X.Excalidraw, {
+          excalidrawAPI: function (api) {
+            apiRef.current = api;
+            if (fresh && api) {
+              fresh = false;
+              setTimeout(function () { api.scrollToContent(undefined, { fitToContent: true, viewportZoomFactor: root.innerWidth < 720 ? 0.95 : 0.85 }); }, 60);
+            }
+          },
+          initialData: initialData,
+          onChange: onChange,
+          langCode: "ru-RU",
+          name: "Доска",
+          theme: "light",
+          gridModeEnabled: false,
+          handleKeyboardGlobally: true,
+          autoFocus: false,
+          renderTopRightUI: topRight,
+          UIOptions: { canvasActions: { loadScene: true, export: { saveFileToDisk: true }, saveAsImage: true, clearCanvas: true, changeViewBackgroundColor: false, toggleTheme: false } }
+        },
+          h(MM, null,
+            h(MM.DefaultItems.LoadScene),
+            h(MM.DefaultItems.SaveToActiveFile),
+            h(MM.DefaultItems.Export),
+            h(MM.DefaultItems.SaveAsImage),
+            h(MM.DefaultItems.Help),
+            h(MM.DefaultItems.ClearCanvas)
           )
         )
       );
     }
 
     host.innerHTML = "";
-    var rootNode = ReactDOM.createRoot(host);
-    rootNode.render(h(App));
+    syncGrid(appState);
+    ReactDOM.createRoot(host).render(h(App));
   }
 
   function start(host) {
     showState(host, "loading", "Загружаем доску…");
     if (!root.EXCALIDRAW_ASSET_PATH) root.EXCALIDRAW_ASSET_PATH = CDN + "@excalidraw/excalidraw@" + VERSION + "/dist/";
     if (!root.process) root.process = { env: { NODE_ENV: "production" } };
-    loadAll().then(function () {
+    Promise.all([loadAll(), loadFonts()]).then(function () {
       if (!root.ExcalidrawLib || !root.ExcalidrawLib.Excalidraw) throw new Error("ExcalidrawLib");
       mount(host);
     }).catch(function () {
@@ -331,7 +404,6 @@
   }
 
   function boot() {
-    applyTheme(resolveTheme(get(KEY_THEME), mqDark && mqDark.matches));
     setupIntro();
     var host = doc.getElementById("demo-wb-root");
     if (host && !host.getAttribute("data-wb-started")) {

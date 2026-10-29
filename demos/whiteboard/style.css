@@ -1,31 +1,61 @@
-@font-face{font-family:"WB Virgil";src:url(https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw-assets/Virgil.woff2) format("woff2");font-display:swap}
-html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#fff}
-.demo-wb{--wb-bg:#fff;--wb-ink:#1b1b1f;--wb-muted:#5c5c66;--wb-accent:#6965db;--wb-accent-hover:#5753d0;--wb-on-accent:#fff;--wb-island:#fff;--wb-line:#e3e3e8;--wb-ghost-hover:#f1f0ff;--wb-backdrop:rgba(255,255,255,.55);--wb-shadow:0 0 0 1px rgba(0,0,0,.04),0 7px 14px 0 rgba(0,0,0,.05),0 14px 28px 0 rgba(0,0,0,.08);position:fixed;inset:0;z-index:2147483000;background:var(--wb-bg);color:var(--wb-ink);font-family:Assistant,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
-.demo-wb--dark{--wb-bg:#121212;--wb-ink:#e3e3e8;--wb-muted:#a6a6b0;--wb-accent:#a8a5ff;--wb-accent-hover:#bbb8ff;--wb-on-accent:#121212;--wb-island:#232329;--wb-line:#3a3a42;--wb-ghost-hover:#2e2d39;--wb-backdrop:rgba(18,18,18,.55);--wb-shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 28px 0 rgba(0,0,0,.45)}
+@font-face{font-family:"WB Inter";font-style:normal;font-weight:400;font-display:swap;src:url(https://unpkg.com/@fontsource/inter@5.1.0/files/inter-cyrillic-400-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"WB Inter";font-style:normal;font-weight:400;font-display:swap;src:url(https://unpkg.com/@fontsource/inter@5.1.0/files/inter-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"WB Inter";font-style:normal;font-weight:600;font-display:swap;src:url(https://unpkg.com/@fontsource/inter@5.1.0/files/inter-cyrillic-600-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"WB Inter";font-style:normal;font-weight:600;font-display:swap;src:url(https://unpkg.com/@fontsource/inter@5.1.0/files/inter-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Helvetica";font-style:normal;font-weight:400;font-display:block;src:url(https://unpkg.com/@fontsource/inter@5.1.0/files/inter-cyrillic-400-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Helvetica";font-style:normal;font-weight:400;font-display:block;src:url(https://unpkg.com/@fontsource/inter@5.1.0/files/inter-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#f4f5f8}
+.demo-wb{--wb-font:"WB Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--wb-canvas:#f4f5f8;--wb-dot:#c3c8d4;--wb-ink:#050038;--wb-muted:#55526e;--wb-accent:#4262ff;--wb-accent-hover:#2f4fe6;--wb-accent-soft:#e6ebff;--wb-island:#fff;--wb-line:#dfe1ea;--wb-yellow:#ffe066;--wb-pink:#ffa8d2;--wb-green:#9ee8a0;--wb-blue:#9fd3ff;--wb-purple:#c9b6ff;--wb-orange:#ffbf80;--wb-shadow:0 2px 6px rgba(5,0,56,.08),0 12px 32px rgba(5,0,56,.12);position:fixed;inset:0;z-index:2147483000;background:var(--wb-canvas);color:var(--wb-ink);font-family:var(--wb-font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .demo-wb *,.demo-wb *::before,.demo-wb *::after{box-sizing:border-box}
-.demo-wb__board{position:absolute;inset:0;overflow:hidden;background:var(--wb-bg)}
-.demo-wb__board .excalidraw .welcome-screen-center__logo{font-size:2.4rem;font-weight:700;letter-spacing:-.02em}
+.demo-wb__board{position:absolute;inset:0;overflow:hidden;background-color:var(--wb-canvas);background-image:radial-gradient(circle,var(--wb-dot) 1.3px,transparent 1.6px);background-size:24px 24px;background-position:0 0}
 .demo-wb__state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;color:var(--wb-muted)}
 .demo-wb__state-text{margin:0;max-width:420px}
-.demo-wb__spinner{width:34px;height:34px;border-radius:50%;border:3px solid rgba(105,101,219,.2);border-top-color:var(--wb-accent);animation:demo-wb-spin .8s linear infinite}
-.demo-wb__retry{appearance:none;border:0;background:var(--wb-accent);color:var(--wb-on-accent);border-radius:8px;padding:8px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
-.demo-wb__intro{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--wb-backdrop);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);animation:demo-wb-fade .18s ease-out}
-.demo-wb__intro[hidden]{display:none}
-.demo-wb__dialog{width:100%;max-width:480px;max-height:calc(100% - 16px);overflow:auto;padding:28px 28px 22px;border-radius:12px;background:var(--wb-island);box-shadow:var(--wb-shadow);animation:demo-wb-pop .2s ease-out}
-.demo-wb__text h1{margin:0 0 14px;padding:0;font-family:"WB Virgil",Assistant,system-ui,sans-serif;font-size:34px;line-height:1.15;font-weight:400;letter-spacing:0;color:var(--wb-ink)}
-.demo-wb__text p{margin:0 0 10px;font-size:15px;line-height:1.55;color:var(--wb-muted)}
-.demo-wb__text>:last-child{margin-bottom:0}
-.demo-wb__actions{display:flex;justify-content:flex-end;gap:8px;margin-top:22px}
-.demo-wb__btn{display:inline-flex;align-items:center;justify-content:center;height:40px;min-width:96px;padding:0 18px;border-radius:8px;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:background-color .12s ease,border-color .12s ease}
-.demo-wb__btn:focus-visible{outline:2px solid var(--wb-accent);outline-offset:2px}
-.demo-wb__btn--primary{border:1px solid var(--wb-accent);background:var(--wb-accent);color:var(--wb-on-accent)}
-.demo-wb__btn--primary:hover{background:var(--wb-accent-hover);border-color:var(--wb-accent-hover)}
-.demo-wb__btn--ghost{border:1px solid var(--wb-line);background:transparent;color:var(--wb-ink)}
-.demo-wb__btn--ghost:hover{background:var(--wb-ghost-hover)}
-.demo-wb__saved{font-size:12px;line-height:2.25rem;color:var(--color-gray-50,#8b8b93);white-space:nowrap;opacity:0;transition:opacity .3s ease;user-select:none}
+.demo-wb__spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--wb-accent-soft);border-top-color:var(--wb-accent);animation:demo-wb-spin .8s linear infinite}
+.demo-wb__retry{appearance:none;border:0;background:var(--wb-accent);color:#fff;border-radius:10px;padding:10px 18px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.demo-wb .excalidraw{--ui-font:var(--wb-font);--color-primary:var(--wb-accent);--color-primary-darker:var(--wb-accent-hover);--color-primary-darkest:#2340c9;--color-primary-light:var(--wb-accent-soft);--color-primary-light-darker:#d3dcff;--color-primary-hover:var(--wb-accent-hover);--island-bg-color:#fff;--default-bg-color:transparent;--button-hover-bg:#eef1ff;--shadow-island:0 2px 6px rgba(5,0,56,.08),0 8px 24px rgba(5,0,56,.1);--border-radius-lg:14px;--text-primary-color:var(--wb-ink);--icon-fill-color:var(--wb-ink);background:transparent;font-family:var(--wb-font)}
+.demo-wb .excalidraw .App-toolbar .Island,.demo-wb .excalidraw .App-toolbar-content{border-radius:14px}
+.demo-wb .excalidraw .App-toolbar{--default-button-size:2.75rem;--default-icon-size:1.35rem;--lg-button-size:2.75rem;--lg-icon-size:1.35rem;padding:4px}
+.demo-wb .excalidraw .App-toolbar .ToolIcon__icon{border-radius:10px}
+.demo-wb .excalidraw .App-toolbar .ToolIcon__keybinding{display:none}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-rectangle]) .ToolIcon__icon{--icon-fill-color:#4262ff}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-diamond]) .ToolIcon__icon{--icon-fill-color:#f2701d}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-ellipse]) .ToolIcon__icon{--icon-fill-color:#12b76a}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-arrow]) .ToolIcon__icon{--icon-fill-color:#e8336d}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-line]) .ToolIcon__icon{--icon-fill-color:#7a5af8}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-freedraw]) .ToolIcon__icon{--icon-fill-color:#0ba5ec}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-text]) .ToolIcon__icon{--icon-fill-color:#050038}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-image]) .ToolIcon__icon{--icon-fill-color:#dd2590}
+.demo-wb .excalidraw .App-toolbar label:has([data-testid=toolbar-eraser]) .ToolIcon__icon{--icon-fill-color:#667085}
+.demo-wb .excalidraw .App-toolbar label .ToolIcon_type_radio:checked+.ToolIcon__icon{--icon-fill-color:#fff;background:var(--wb-accent)}
+.demo-wb .excalidraw .HintViewer{display:none}
+.demo-wb__stickers{position:absolute;left:50%;bottom:16px;z-index:4;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:#fff;box-shadow:var(--wb-shadow);transform:translateX(-50%)}
+.demo-wb__stickers-title{margin:0 4px 0 2px;font-size:12px;font-weight:600;line-height:1.2;letter-spacing:.02em;text-transform:uppercase;color:var(--wb-muted)}
+.demo-wb__sticker{display:block;width:40px;height:40px;padding:0;border:0;border-radius:4px 4px 12px 4px;background:var(--c);box-shadow:inset 0 -3px 0 rgba(0,0,0,.08),0 1px 2px rgba(5,0,56,.15);cursor:pointer;transition:transform .12s ease}
+.demo-wb__sticker:hover{transform:translateY(-2px) rotate(-3deg)}
+.demo-wb__sticker:focus-visible{outline:2px solid var(--wb-accent);outline-offset:2px}
+.demo-wb__saved{display:inline-block;padding:0 10px;border-radius:8px;font-size:12px;font-weight:600;line-height:2.25rem;color:#0f7b48;background:#dcfae6;white-space:nowrap;opacity:0;transition:opacity .3s ease;user-select:none}
 .demo-wb__saved--on{opacity:1}
+.demo-wb__intro{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,0,56,.32);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);animation:demo-wb-fade .18s ease-out}
+.demo-wb__intro[hidden]{display:none}
+.demo-wb__dialog{width:100%;max-width:500px;max-height:calc(100% - 16px);overflow:auto;padding:28px;border-radius:20px;background:var(--wb-island);box-shadow:0 24px 64px rgba(5,0,56,.28);animation:demo-wb-pop .22s ease-out}
+.demo-wb__notes{display:flex;gap:10px;margin:0 0 20px}
+.demo-wb__note{display:block;width:44px;height:44px;border-radius:4px 4px 14px 4px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.07),0 2px 4px rgba(5,0,56,.12)}
+.demo-wb__note--yellow{background:var(--wb-yellow);transform:rotate(-6deg)}
+.demo-wb__note--pink{background:var(--wb-pink);transform:rotate(4deg)}
+.demo-wb__note--green{background:var(--wb-green);transform:rotate(-3deg)}
+.demo-wb__note--blue{background:var(--wb-blue);transform:rotate(7deg)}
+.demo-wb__text h1{margin:0 0 12px;padding:0;font-family:var(--wb-font);font-size:30px;line-height:1.15;font-weight:600;letter-spacing:-.02em;color:var(--wb-ink)}
+.demo-wb__text p{margin:0 0 10px;font-size:16px;line-height:1.55;color:var(--wb-muted)}
+.demo-wb__text>:last-child{margin-bottom:0}
+.demo-wb__actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
+.demo-wb__btn{display:inline-flex;align-items:center;justify-content:center;height:44px;min-width:110px;padding:0 20px;border-radius:12px;font:inherit;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer;transition:background-color .12s ease,border-color .12s ease}
+.demo-wb__btn:focus-visible{outline:3px solid #a9b8ff;outline-offset:2px}
+.demo-wb__btn--primary{border:0;background:var(--wb-accent);color:#fff}
+.demo-wb__btn--primary:hover{background:var(--wb-accent-hover)}
+.demo-wb__btn--ghost{border:1px solid var(--wb-line);background:#fff;color:var(--wb-ink)}
+.demo-wb__btn--ghost:hover{background:#f4f5f8}
 @keyframes demo-wb-spin{to{transform:rotate(360deg)}}
 @keyframes demo-wb-fade{from{opacity:0}}
-@keyframes demo-wb-pop{from{opacity:0;transform:translateY(6px) scale(.98)}}
-@media (max-width:720px){.demo-wb__dialog{padding:22px 20px 18px}.demo-wb__text h1{font-size:28px}.demo-wb__text p{font-size:14px}.demo-wb__btn{flex:1}.demo-wb__saved{display:none}}
-@media (prefers-reduced-motion:reduce){.demo-wb__spinner{animation-duration:2s}.demo-wb__intro,.demo-wb__dialog{animation:none}.demo-wb__saved,.demo-wb__btn{transition:none}}
+@keyframes demo-wb-pop{from{opacity:0;transform:translateY(8px) scale(.98)}}
+@media (max-width:720px){.demo-wb__dialog{padding:22px 20px 20px}.demo-wb__text h1{font-size:26px}.demo-wb__text p{font-size:15px}.demo-wb__btn{flex:1;min-width:0}.demo-wb__saved{display:none}.demo-wb__stickers{bottom:88px;padding:6px;gap:6px}.demo-wb__stickers-title{display:none}.demo-wb__sticker{width:34px;height:34px}.demo-wb .excalidraw .App-toolbar{--default-button-size:2.4rem;--lg-button-size:2.4rem}}
+@media (prefers-reduced-motion:reduce){.demo-wb__spinner{animation-duration:2s}.demo-wb__intro,.demo-wb__dialog{animation:none}.demo-wb__saved,.demo-wb__btn,.demo-wb__sticker{transition:none}}
