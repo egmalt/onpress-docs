@@ -1,0 +1,231 @@
+<div class="inv" id="inv-app" data-inv-root data-op-reveal-skip>
+
+  <header class="inv__top">
+    <a class="inv__back" href="/docs/v2/ru/guides/demo/" title="К каталогу демо" aria-label="К каталогу демо"><i class="ph ph-arrow-left" aria-hidden="true"></i></a>
+    <div class="inv__brand">
+      <svg class="inv__mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="currentColor"/><path d="M10 11h12M10 16h12M10 21h7" stroke="var(--inv-paper)" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="21.5" r="3.2" fill="var(--inv-accent)"/></svg>
+      <span class="inv__brand-name">Квиток</span>
+    </div>
+    <button type="button" class="inv__btn inv__btn--ghost inv__only-narrow" data-act="drawer" title="Мои счета">
+      <i class="ph ph-files inv__ico" aria-hidden="true"></i><span class="inv__btn-text">Счета</span><span class="inv__badge" data-count>0</span>
+    </button>
+    <div class="inv__doc">
+      <span class="inv__doc-title" data-doc-title></span>
+      <span class="inv__saved" data-saved aria-live="polite">Сохранено</span>
+    </div>
+    <div class="inv__top-acts">
+      <button type="button" class="inv__btn inv__btn--ghost" data-act="new" title="Новый счет (Alt+N)"><i class="ph ph-plus inv__ico" aria-hidden="true"></i><span class="inv__btn-text">Новый</span></button>
+      <button type="button" class="inv__btn inv__btn--ghost" data-act="duplicate" title="Копия с новым номером"><i class="ph ph-copy inv__ico" aria-hidden="true"></i><span class="inv__btn-text">Копия</span></button>
+      <button type="button" class="inv__btn inv__btn--ghost" data-act="print" title="Печать (Ctrl+P)"><i class="ph ph-printer inv__ico" aria-hidden="true"></i><span class="inv__btn-text">Печать</span></button>
+      <button type="button" class="inv__btn inv__btn--primary" data-act="pdf" title="Скачать PDF (Ctrl+Shift+S)"><i class="ph ph-download-simple inv__ico" aria-hidden="true"></i><span class="inv__btn-text">PDF</span><span class="inv__spinner" aria-hidden="true"></span></button>
+    </div>
+  </header>
+
+  <div class="inv__body">
+
+    <div class="inv__drawer" data-drawer>
+      <div class="inv__drawer-backdrop" data-act="drawer-close"></div>
+      <aside class="inv__drawer-panel" aria-label="Мои счета и клиенты" tabindex="-1">
+        <div class="inv__drawer-head">
+          <div class="inv__seg" role="tablist">
+            <button type="button" class="inv__seg-btn inv__seg-btn--active" data-dtab="invoices" role="tab">Счета</button>
+            <button type="button" class="inv__seg-btn" data-dtab="clients" role="tab">Клиенты</button>
+          </div>
+          <button type="button" class="inv__icon-btn inv__only-narrow" data-act="drawer-close" aria-label="Закрыть"><i class="ph ph-x" aria-hidden="true"></i></button>
+        </div>
+        <label class="inv__drawer-search">
+          <i class="ph ph-magnifying-glass inv__ico" aria-hidden="true"></i>
+          <input type="search" class="inv__input inv__input--bare" placeholder="Номер, клиент, сумма" data-dsearch aria-label="Поиск">
+        </label>
+        <div class="inv__drawer-stats" data-dstats></div>
+        <div class="inv__drawer-body" data-dlist></div>
+        <div class="inv__drawer-foot">
+          <button type="button" class="inv__link" data-act="export"><i class="ph ph-download-simple" aria-hidden="true"></i>Архив</button>
+          <label class="inv__link"><i class="ph ph-upload-simple" aria-hidden="true"></i>Загрузить<input type="file" accept="application/json,.json" class="inv__file" data-import></label>
+        </div>
+      </aside>
+    </div>
+
+    <div class="inv__work" data-mobile-view="form">
+      <form class="inv__form" autocomplete="off" novalidate data-form>
+
+        <section class="inv__card">
+          <h2 class="inv__card-title"><span class="inv__step">1</span>Счет</h2>
+          <div class="inv__grid inv__grid--4">
+            <label class="inv__field"><span class="inv__label">Номер</span><input class="inv__input inv__mono" data-f="number" maxlength="24"></label>
+            <label class="inv__field"><span class="inv__label">Дата</span><input class="inv__input" type="date" data-f="date"></label>
+            <label class="inv__field"><span class="inv__label">Оплатить до</span><input class="inv__input" type="date" data-f="due"></label>
+            <label class="inv__field"><span class="inv__label">Валюта</span>
+              <select class="inv__input" data-f="currency">
+                <option value="rub">Рубли</option>
+                <option value="usd">Доллары США</option>
+                <option value="eur">Евро</option>
+              </select>
+            </label>
+          </div>
+          <div class="inv__chips">
+            <span class="inv__chips-label">Срок оплаты</span>
+            <button type="button" class="inv__chip" data-due-days="3">3 дня</button>
+            <button type="button" class="inv__chip" data-due-days="5">5 дней</button>
+            <button type="button" class="inv__chip" data-due-days="10">10 дней</button>
+            <button type="button" class="inv__chip" data-due-days="30">30 дней</button>
+            <button type="button" class="inv__chip" data-due-days="0">Без срока</button>
+          </div>
+        </section>
+
+        <section class="inv__card">
+          <h2 class="inv__card-title"><span class="inv__step">2</span>Поставщик<span class="inv__card-note">запомним для следующих счетов</span></h2>
+          <div class="inv__grid">
+            <label class="inv__field inv__field--wide"><span class="inv__label">Название или ФИО</span><input class="inv__input" data-f="seller.name" placeholder="ООО «Ромашка» или ИП Иванов И. И."></label>
+            <label class="inv__field"><span class="inv__label">ИНН</span><input class="inv__input inv__mono" data-f="seller.inn" data-check="inn" inputmode="numeric" maxlength="12" placeholder="10 или 12 цифр"><span class="inv__err" data-err></span></label>
+            <label class="inv__field"><span class="inv__label">КПП <span class="inv__opt">у ООО</span></span><input class="inv__input inv__mono" data-f="seller.kpp" data-check="kpp" inputmode="numeric" maxlength="9" placeholder="9 цифр"><span class="inv__err" data-err></span></label>
+            <label class="inv__field inv__field--wide"><span class="inv__label">Адрес</span><input class="inv__input" data-f="seller.address" placeholder="Индекс, город, улица, дом"></label>
+            <label class="inv__field inv__field--wide"><span class="inv__label">Банк</span><input class="inv__input" data-f="seller.bank" placeholder="АО «Банк», г. Москва"></label>
+            <label class="inv__field"><span class="inv__label">БИК</span><input class="inv__input inv__mono" data-f="seller.bik" data-check="bik" inputmode="numeric" maxlength="9" placeholder="9 цифр"><span class="inv__err" data-err></span></label>
+            <label class="inv__field"><span class="inv__label">Корр. счет</span><input class="inv__input inv__mono" data-f="seller.corr" data-check="corr" inputmode="numeric" maxlength="20" placeholder="20 цифр"><span class="inv__err" data-err></span></label>
+            <label class="inv__field inv__field--wide"><span class="inv__label">Расчетный счет</span><input class="inv__input inv__mono" data-f="seller.account" data-check="account" inputmode="numeric" maxlength="20" placeholder="20 цифр"><span class="inv__err" data-err></span></label>
+            <label class="inv__field"><span class="inv__label">Руководитель</span><input class="inv__input" data-f="seller.director" placeholder="Иванов И. И."></label>
+            <label class="inv__field"><span class="inv__label">Бухгалтер <span class="inv__opt">необязательно</span></span><input class="inv__input" data-f="seller.accountant"></label>
+          </div>
+          <div class="inv__uploads">
+            <div class="inv__upload" data-upload="logo">
+              <div class="inv__upload-thumb" data-thumb><i class="ph ph-image" aria-hidden="true"></i></div>
+              <div class="inv__upload-body">
+                <span class="inv__upload-title">Логотип</span>
+                <span class="inv__upload-hint">PNG или JPG, в шапку счета</span>
+                <span class="inv__upload-actions">
+                  <label class="inv__link">Выбрать<input type="file" accept="image/png,image/jpeg,image/webp" class="inv__file" data-file="logo"></label>
+                  <button type="button" class="inv__link inv__link--danger" data-act="file-clear" data-target="logo">Убрать</button>
+                </span>
+              </div>
+            </div>
+            <div class="inv__upload" data-upload="stamp">
+              <div class="inv__upload-thumb" data-thumb><i class="ph ph-stamp" aria-hidden="true"></i></div>
+              <div class="inv__upload-body">
+                <span class="inv__upload-title">Печать и подпись</span>
+                <span class="inv__upload-hint">Лучше PNG с прозрачным фоном</span>
+                <span class="inv__upload-actions">
+                  <label class="inv__link">Выбрать<input type="file" accept="image/png,image/jpeg,image/webp" class="inv__file" data-file="stamp"></label>
+                  <button type="button" class="inv__link inv__link--danger" data-act="file-clear" data-target="stamp">Убрать</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="inv__card">
+          <h2 class="inv__card-title"><span class="inv__step">3</span>Покупатель
+            <button type="button" class="inv__link inv__card-action" data-act="drawer-clients"><i class="ph ph-users" aria-hidden="true"></i>Из клиентов</button>
+          </h2>
+          <div class="inv__grid">
+            <label class="inv__field inv__field--wide"><span class="inv__label">Название или ФИО</span><input class="inv__input" data-f="buyer.name" list="inv-clients" placeholder="Начните вводить, подскажем из прошлых счетов"></label>
+            <label class="inv__field"><span class="inv__label">ИНН</span><input class="inv__input inv__mono" data-f="buyer.inn" data-check="inn" inputmode="numeric" maxlength="12"><span class="inv__err" data-err></span></label>
+            <label class="inv__field"><span class="inv__label">КПП</span><input class="inv__input inv__mono" data-f="buyer.kpp" data-check="kpp" inputmode="numeric" maxlength="9"><span class="inv__err" data-err></span></label>
+            <label class="inv__field inv__field--wide"><span class="inv__label">Адрес</span><input class="inv__input" data-f="buyer.address"></label>
+          </div>
+          <datalist id="inv-clients" data-clients-list></datalist>
+        </section>
+
+        <section class="inv__card">
+          <h2 class="inv__card-title"><span class="inv__step">4</span>Товары и услуги</h2>
+          <div class="inv__rows-head" aria-hidden="true">
+            <span></span><span>Наименование</span><span>Кол-во</span><span>Ед.</span><span>Цена</span><span class="inv__num">Сумма</span><span></span>
+          </div>
+          <div class="inv__rows" data-rows></div>
+          <div class="inv__empty" data-rows-empty>
+            <i class="ph ph-list-bullets" aria-hidden="true"></i>
+            <span>Ни одной позиции. Добавьте первую, а сумма прописью посчитается сама.</span>
+          </div>
+          <div class="inv__rows-foot">
+            <button type="button" class="inv__btn inv__btn--soft" data-act="row-add"><i class="ph ph-plus inv__ico" aria-hidden="true"></i>Добавить позицию</button>
+            <span class="inv__hint"><kbd>Enter</kbd> следующая строка <kbd>Alt</kbd><kbd>↑</kbd><kbd>↓</kbd> переставить</span>
+          </div>
+          <datalist id="inv-units">
+            <option value="шт"></option><option value="усл"></option><option value="час"></option><option value="мес"></option><option value="день"></option><option value="кг"></option><option value="м"></option><option value="м²"></option><option value="л"></option><option value="компл"></option>
+          </datalist>
+          <template data-tpl="row">
+            <div class="inv__row" data-row>
+              <button type="button" class="inv__handle" tabindex="-1" aria-label="Перетащить строку"><i class="ph ph-dots-six-vertical" aria-hidden="true"></i></button>
+              <input class="inv__input inv__row-name" data-k="name" placeholder="Товар или услуга" aria-label="Наименование">
+              <input class="inv__input inv__row-qty inv__mono" data-k="qty" inputmode="decimal" placeholder="1" aria-label="Количество">
+              <input class="inv__input inv__row-unit" data-k="unit" list="inv-units" placeholder="шт" aria-label="Единица">
+              <input class="inv__input inv__row-price inv__mono" data-k="price" inputmode="decimal" placeholder="0,00" aria-label="Цена">
+              <span class="inv__row-sum inv__num" data-sum>0,00</span>
+              <button type="button" class="inv__icon-btn inv__row-del" data-act="row-del" aria-label="Удалить строку"><i class="ph ph-x" aria-hidden="true"></i></button>
+            </div>
+          </template>
+          <div class="inv__totals" data-totals></div>
+        </section>
+
+        <section class="inv__card">
+          <h2 class="inv__card-title"><span class="inv__step">5</span>НДС</h2>
+          <div class="inv__vat">
+            <div class="inv__seg" role="radiogroup" aria-label="Режим НДС" data-vat-mode>
+              <button type="button" class="inv__seg-btn" role="radio" data-value="none">Без НДС</button>
+              <button type="button" class="inv__seg-btn" role="radio" data-value="incl">В том числе</button>
+              <button type="button" class="inv__seg-btn" role="radio" data-value="top">Сверху</button>
+            </div>
+            <label class="inv__field inv__field--inline" data-vat-rate-wrap><span class="inv__label">Ставка</span>
+              <select class="inv__input" data-f="vatRate">
+                <option value="22">22%</option>
+                <option value="20">20%</option>
+                <option value="10">10%</option>
+                <option value="7">7%</option>
+                <option value="5">5%</option>
+                <option value="0">0%</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="inv__card">
+          <h2 class="inv__card-title"><span class="inv__step">6</span>Оформление</h2>
+          <label class="inv__field inv__field--wide"><span class="inv__label">Комментарий в счете</span><textarea class="inv__input inv__textarea" data-f="note" rows="2" placeholder="Например: счет действителен 5 банковских дней"></textarea></label>
+          <div class="inv__design">
+            <div class="inv__swatches" role="radiogroup" aria-label="Цвет счета" data-accent>
+              <button type="button" class="inv__swatch" role="radio" data-value="#1d4d3a" style="--sw:#1d4d3a" aria-label="Чернильный"></button>
+              <button type="button" class="inv__swatch" role="radio" data-value="#c8401a" style="--sw:#c8401a" aria-label="Киноварь"></button>
+              <button type="button" class="inv__swatch" role="radio" data-value="#1f2937" style="--sw:#1f2937" aria-label="Графит"></button>
+              <button type="button" class="inv__swatch" role="radio" data-value="#2952cc" style="--sw:#2952cc" aria-label="Кобальт"></button>
+              <button type="button" class="inv__swatch" role="radio" data-value="#8a5a00" style="--sw:#8a5a00" aria-label="Охра"></button>
+            </div>
+            <label class="inv__switch"><input type="checkbox" data-f="showQr"><span class="inv__switch-track"></span><span>QR-код для оплаты</span></label>
+            <label class="inv__switch"><input type="checkbox" data-f="showSign"><span class="inv__switch-track"></span><span>Подписи</span></label>
+          </div>
+          <p class="inv__hint inv__qr-hint" data-qr-hint></p>
+        </section>
+
+        <p class="inv__keys"><kbd>Ctrl</kbd><kbd>S</kbd> сохранить <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd> PDF <kbd>Ctrl</kbd><kbd>P</kbd> печать <kbd>Alt</kbd><kbd>N</kbd> новый счет</p>
+      </form>
+
+      <section class="inv__preview" aria-label="Предпросмотр счета">
+        <div class="inv__stage" data-stage>
+          <div class="inv__sheet-wrap" data-sheet-wrap>
+            <div class="inv-sheet" data-sheet></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <nav class="inv__tabs" aria-label="Режим">
+    <button type="button" class="inv__tab" data-act="drawer"><i class="ph ph-files" aria-hidden="true"></i><span>Счета</span></button>
+    <button type="button" class="inv__tab inv__tab--active" data-view="form" aria-pressed="true"><i class="ph ph-pencil-simple" aria-hidden="true"></i><span>Заполнить</span></button>
+    <button type="button" class="inv__tab" data-view="preview" aria-pressed="false"><i class="ph ph-eye" aria-hidden="true"></i><span>Счет <b class="inv__tab-sum" data-tab-sum></b></span></button>
+  </nav>
+
+  <div class="inv__toast" data-toast role="status" aria-live="polite"></div>
+
+  <div class="inv__intro inv__intro--open" data-intro role="dialog" aria-modal="true" aria-labelledby="inv-intro-title">
+    <div class="inv__intro-card">
+      <svg class="inv__intro-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="currentColor"/><path d="M10 11h12M10 16h12M10 21h7" stroke="var(--inv-paper)" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="21.5" r="3.2" fill="var(--inv-accent)"/></svg>
+      <h1 class="inv__intro-title" id="inv-intro-title" data-op-bind='{"text":"page.title"}'>Квиток</h1>
+      <div class="inv__intro-text"><!-- onpress/content /--></div>
+      <div class="inv__intro-acts">
+        <a class="inv__btn inv__btn--ghost inv__btn--lg" href="/docs/v2/ru/guides/demo/" data-intro-back><i class="ph ph-arrow-left inv__ico" aria-hidden="true"></i>Назад</a>
+        <button type="button" class="inv__btn inv__btn--primary inv__btn--lg" data-intro-open>Открыть</button>
+      </div>
+    </div>
+  </div>
+
+</div>

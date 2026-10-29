@@ -1,0 +1,201 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<div class="zh" data-cvt-root data-op-reveal-skip>
+
+  <header class="zh__bar">
+    <a class="zh__logo" href="/docs/v2/ru/guides/demo/" title="Все демо" aria-label="Жмых, к списку демо">
+      <span class="zh__logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5"/><path d="M20 15v5h-5"/><path d="m4 4 6 6"/><path d="m20 20-6-6"/></svg></span>
+      <span class="zh__logo-word">жмых</span>
+    </a>
+    <button type="button" class="zh__tool zh__tool--accent" data-cvt-add title="Добавить файлы (O)">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Добавить</span>
+    </button>
+    <div class="zh__sep" aria-hidden="true"></div>
+    <div class="zh__zoom" role="group" aria-label="Масштаб">
+      <button type="button" class="zh__zbtn" data-zoom="fit" title="Вписать (0)">Вписать</button>
+      <button type="button" class="zh__zbtn" data-zoom="1" title="100% (1)">1:1</button>
+      <button type="button" class="zh__zbtn" data-zoom="2" title="200% (2)">2:1</button>
+    </div>
+    <div class="zh__summary zh__mono" data-cvt-summary aria-live="polite"></div>
+    <div class="zh__spacer"></div>
+    <span class="zh__local" title="Файлы обрабатываются на вашем устройстве и никуда не отправляются"><span class="zh__local-dot" aria-hidden="true"></span>Файлы не покидают браузер</span>
+    <button type="button" class="zh__tool" data-cvt-clear title="Убрать все файлы" aria-label="Очистить">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg>
+      <span>Очистить</span>
+    </button>
+    <button type="button" class="zh__tool zh__tool--accent" data-cvt-zip title="Скачать результат (S)">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+      <span data-cvt-zip-label>Скачать</span>
+    </button>
+    <button type="button" class="zh__icon" data-cvt-help title="О приложении" aria-label="О приложении">?</button>
+    <div class="zh__overall" aria-hidden="true"><div class="zh__overall-bar" data-cvt-overall></div></div>
+  </header>
+
+  <aside class="zh__rail" aria-label="Файлы">
+    <div class="zh__rail-head"><span>Файлы</span><span class="zh__mono" data-cvt-count>0</span></div>
+    <ul class="zh__list" data-cvt-list aria-label="Файлы"></ul>
+    <button type="button" class="zh__rail-add" data-cvt-add>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Еще файлы</span>
+    </button>
+  </aside>
+
+  <section class="zh__stage" aria-label="Просмотр">
+    <div class="zh__empty" data-cvt-empty tabindex="0" role="button" aria-label="Выбрать изображения">
+      <div class="zh__empty-art" aria-hidden="true">
+        <svg viewBox="0 0 120 120" width="120" height="120" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="14" width="92" height="92" rx="18" stroke-dasharray="10 12"/><path d="M38 38h14M38 38v14"/><path d="M82 82H68M82 82V68"/><path d="m38 38 16 16"/><path d="m82 82-16-16"/></svg>
+      </div>
+      <div class="zh__empty-title">Бросайте картинки</div>
+      <div class="zh__empty-sub">Перетащите файлы в окно, нажмите сюда или вставьте из буфера через Ctrl+V. Можно сразу пачкой.</div>
+      <div class="zh__empty-formats zh__mono">PNG · JPG · WebP · AVIF · GIF · BMP · SVG · HEIC</div>
+    </div>
+
+    <div class="zh__viewer" data-cvt-viewer hidden>
+      <div class="zh__canvas" data-cvt-canvas>
+        <div class="zh__frame" data-cvt-frame>
+          <img class="zh__img" data-cvt-before alt="Исходник">
+          <div class="zh__after" data-cvt-after-wrap><img class="zh__img" data-cvt-after alt="Результат"></div>
+          <span class="zh__tag zh__tag--before">ДО</span>
+          <span class="zh__tag zh__tag--after">ПОСЛЕ</span>
+          <div class="zh__handle" data-cvt-handle role="slider" tabindex="0" aria-label="Шторка сравнения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <span class="zh__knob" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 7-5 5 5 5"/><path d="m15 7 5 5-5 5"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <div class="zh__busy" data-cvt-busy hidden><span class="zh__spin" aria-hidden="true"></span><span data-cvt-busy-text>Сжатие</span></div>
+      <div class="zh__readout">
+        <div class="zh__side"><span class="zh__side-k">ДО</span><span class="zh__mono" data-cvt-binfo></span></div>
+        <div class="zh__gain zh__mono" data-cvt-gain></div>
+        <div class="zh__side zh__side--r"><span class="zh__mono" data-cvt-ainfo></span><span class="zh__side-k zh__side-k--a">ПОСЛЕ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="zh__panel" aria-label="Настройки">
+    <div class="zh__sec">
+      <div class="zh__sec-h" id="zh-fmt">Формат</div>
+      <div class="zh__fmts" role="radiogroup" aria-labelledby="zh-fmt" data-cvt-format>
+        <button type="button" class="zh__fmt" role="radio" data-value="webp"><b>WebP</b><small>сайты</small></button>
+        <button type="button" class="zh__fmt" role="radio" data-value="avif"><b>AVIF</b><small>легче всех</small></button>
+        <button type="button" class="zh__fmt" role="radio" data-value="jpg"><b>JPG</b><small>везде</small></button>
+        <button type="button" class="zh__fmt" role="radio" data-value="png"><b>PNG</b><small>без потерь</small></button>
+        <button type="button" class="zh__fmt" role="radio" data-value="ico"><b>ICO</b><small>фавикон</small></button>
+      </div>
+      <p class="zh__hint" data-cvt-format-hint></p>
+    </div>
+
+    <div class="zh__sec" data-cvt-quality-group>
+      <div class="zh__row">
+        <label class="zh__sec-h" for="zh-q">Качество</label>
+        <output class="zh__num zh__mono" for="zh-q" data-cvt-quality-out>75</output>
+      </div>
+      <input class="zh__range" id="zh-q" type="range" min="1" max="100" step="1" value="75" data-cvt-quality>
+      <label class="zh__toggle" data-cvt-lossless-wrap>
+        <input type="checkbox" data-cvt-lossless>
+        <span class="zh__toggle-ui" aria-hidden="true"></span>
+        <span>Без потерь</span>
+      </label>
+    </div>
+
+    <div class="zh__sec" data-cvt-ico-group hidden>
+      <div class="zh__sec-h">Размеры в ICO</div>
+      <div class="zh__chips" data-cvt-ico>
+        <label class="zh__chip"><input type="checkbox" value="16"><span>16</span></label>
+        <label class="zh__chip"><input type="checkbox" value="24"><span>24</span></label>
+        <label class="zh__chip"><input type="checkbox" value="32"><span>32</span></label>
+        <label class="zh__chip"><input type="checkbox" value="48"><span>48</span></label>
+        <label class="zh__chip"><input type="checkbox" value="64"><span>64</span></label>
+        <label class="zh__chip"><input type="checkbox" value="128"><span>128</span></label>
+        <label class="zh__chip"><input type="checkbox" value="256"><span>256</span></label>
+      </div>
+      <p class="zh__hint">Картинка вписывается в квадрат с прозрачными полями.</p>
+    </div>
+
+    <div class="zh__sec" data-cvt-bg-group hidden>
+      <div class="zh__row">
+        <label class="zh__sec-h" for="zh-bg">Фон вместо прозрачности</label>
+        <input class="zh__color" id="zh-bg" type="color" value="#ffffff" data-cvt-bg>
+      </div>
+    </div>
+
+    <div class="zh__sec" data-cvt-size-group>
+      <div class="zh__sec-h">Размер, px</div>
+      <div class="zh__chips" data-cvt-size-presets>
+        <button type="button" class="zh__chip-btn" data-size="0">Исходный</button>
+        <button type="button" class="zh__chip-btn" data-size="2560">2560</button>
+        <button type="button" class="zh__chip-btn" data-size="1920">1920</button>
+        <button type="button" class="zh__chip-btn" data-size="1280">1280</button>
+        <button type="button" class="zh__chip-btn" data-size="800">800</button>
+        <button type="button" class="zh__chip-btn" data-size="400">400</button>
+      </div>
+      <div class="zh__dims">
+        <label class="zh__field"><span>Ширина до</span><input class="zh__input zh__mono" type="number" min="1" max="16384" inputmode="numeric" placeholder="авто" data-cvt-maxw></label>
+        <span class="zh__x" aria-hidden="true">×</span>
+        <label class="zh__field"><span>Высота до</span><input class="zh__input zh__mono" type="number" min="1" max="16384" inputmode="numeric" placeholder="авто" data-cvt-maxh></label>
+      </div>
+      <p class="zh__hint">Пропорции сохраняются, маленькие картинки не растягиваются.</p>
+    </div>
+
+    <div class="zh__sec">
+      <div class="zh__sec-h" id="zh-crop">Обрезка по центру</div>
+      <div class="zh__chips" role="radiogroup" aria-labelledby="zh-crop" data-cvt-crop>
+        <button type="button" class="zh__chip-btn" role="radio" data-value="none">Нет</button>
+        <button type="button" class="zh__chip-btn" role="radio" data-value="1:1">1:1</button>
+        <button type="button" class="zh__chip-btn" role="radio" data-value="16:9">16:9</button>
+        <button type="button" class="zh__chip-btn" role="radio" data-value="4:5">4:5</button>
+        <button type="button" class="zh__chip-btn" role="radio" data-value="4:3">4:3</button>
+        <button type="button" class="zh__chip-btn" role="radio" data-value="3:2">3:2</button>
+        <button type="button" class="zh__chip-btn" role="radio" data-value="9:16">9:16</button>
+      </div>
+    </div>
+
+    <div class="zh__keys">
+      <div><kbd>←</kbd><kbd>→</kbd> шторка</div>
+      <div><kbd>↑</kbd><kbd>↓</kbd> файлы</div>
+      <div><kbd>0</kbd><kbd>1</kbd><kbd>2</kbd> масштаб</div>
+      <div><kbd>S</kbd> скачать</div>
+      <div><kbd>Del</kbd> убрать</div>
+      <div><kbd>O</kbd> добавить</div>
+    </div>
+    <button type="button" class="zh__reset" data-cvt-reset>Сбросить настройки</button>
+  </aside>
+
+  <input class="zh__file" type="file" multiple accept="image/*,.heic,.heif,.avif,.svg,.bmp,.ico" data-cvt-input tabindex="-1" aria-hidden="true">
+
+  <template data-cvt-item-tpl>
+    <li class="zh-item" aria-selected="false">
+      <span class="zh-item__thumb"><img class="zh-item__img" alt="" decoding="async"><span class="zh-item__badge" data-el="badge"></span></span>
+      <span class="zh-item__body">
+        <span class="zh-item__name" data-el="name"></span>
+        <span class="zh-item__meta zh__mono"><span data-el="before"></span><span class="zh-item__arrow" aria-hidden="true">→</span><span data-el="after"></span></span>
+        <span class="zh-item__status" data-el="status"></span>
+        <span class="zh-item__progress"><span class="zh-item__bar" data-el="bar"></span></span>
+      </span>
+      <span class="zh-item__save zh__mono" data-el="save"></span>
+      <span class="zh-item__btns">
+        <button type="button" class="zh-item__btn" data-act="download" title="Скачать" aria-label="Скачать"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></button>
+        <button type="button" class="zh-item__btn zh-item__btn--del" data-act="remove" title="Убрать" aria-label="Убрать"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </span>
+    </li>
+  </template>
+
+  <div class="zh-intro is-open" data-cvt-intro role="dialog" aria-modal="true" aria-labelledby="zh-intro-h">
+    <div class="zh-intro__card">
+      <div class="zh-intro__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5"/><path d="M20 15v5h-5"/><path d="m4 4 6 6"/><path d="m20 20-6-6"/></svg>
+      </div>
+      <div class="zh-intro__text" id="zh-intro-h"><!-- onpress/content /--></div>
+      <div class="zh-intro__btns">
+        <button type="button" class="zh-intro__open" data-cvt-intro-open>Открыть</button>
+        <a class="zh-intro__back" href="/docs/v2/ru/guides/demo/">Назад</a>
+      </div>
+      <div class="zh-intro__foot zh__mono">Enter или Esc, чтобы начать</div>
+    </div>
+  </div>
+
+  <div class="zh-over" data-cvt-over aria-hidden="true"><div class="zh-over__box"><span>Отпускайте</span></div></div>
+  <div class="zh-toast" data-cvt-toast role="status" aria-live="polite"></div>
+</div>

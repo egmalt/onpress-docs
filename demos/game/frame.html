@@ -1,0 +1,111 @@
+<div class="blobdrop-app" data-op-reveal-skip>
+  <main class="blobdrop" id="bdRoot" data-op-reveal-skip>
+    <div class="blobdrop__head">
+      <a class="blobdrop__back" href="/docs/v2/ru/guides/demo/" title="Назад к каталогу демо" aria-label="Назад к каталогу демо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+      <div class="blobdrop__title">Blob Drop</div>
+      <div class="blobdrop__day" id="bdDay"></div>
+    </div>
+    <div class="blobdrop__board" id="bdBoard">
+      <div class="blobdrop__left" id="bdLeft">
+        <div class="blobdrop__stats">
+          <div class="blobdrop__score" id="bdScore" aria-live="polite">0</div>
+          <div class="blobdrop__chip blobdrop__chip--tilt" id="bdBest">РЕКОРД 0</div>
+        </div>
+        <div class="blobdrop__next-wrap">
+          <div class="blobdrop__chip">ДАЛЬШЕ</div>
+          <div class="blobdrop__next"><canvas id="bdNext" width="152" height="152" aria-label="Следующая капля"></canvas></div>
+        </div>
+        <div class="blobdrop__order">
+          <div class="blobdrop__order-label">ПОРЯДОК<br>СЛИЯНИЯ</div>
+          <div class="blobdrop__order-bracket" id="bdBracket"></div>
+          <div class="blobdrop__order-list" id="bdOrder"></div>
+        </div>
+      </div>
+      <div class="blobdrop__jar" id="bdJar">
+        <canvas class="blobdrop__canvas" id="bdGame" tabindex="0" aria-label="Банка с каплями: стрелки двигают каплю, пробел бросает"></canvas>
+        <div class="blobdrop__loading" id="bdLoading">Загружаем банку…</div>
+      </div>
+      <div class="blobdrop__right" id="bdRight">
+        <div class="blobdrop__top">
+          <div class="blobdrop__tools">
+            <button class="blobdrop__tool" id="bdUndo" type="button" title="Отменить ход (Z)" aria-label="Отменить ход">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 13.5a12 12 0 1 1-1.5 13"/><path d="M8 6.5v8h8"/></svg>
+            </button>
+            <button class="blobdrop__tool" id="bdRules" type="button" title="Как играть (H)" aria-label="Как играть">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="5" width="22" height="30" rx="4"/><path d="M6 11h7M6 18h7M6 25h7M17 13h9M17 20h9M17 27h6"/></svg>
+            </button>
+            <button class="blobdrop__tool" id="bdTrophy" type="button" title="Лучшие результаты (T)" aria-label="Лучшие результаты">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6h18v8a9 9 0 0 1-18 0z" fill="currentColor"/><path d="M11 9H5c0 6 3 8 7 8M29 9h6c0 6-3 8-7 8M20 23v6M13 34h14M15 34l2-5h6l2 5"/></svg>
+            </button>
+          </div>
+          <div class="blobdrop__rank"><div class="blobdrop__rank-pos" id="bdRankPos">#1</div><div class="blobdrop__rank-gap" id="bdRankGap">ЛУЧШИЙ РЕЗУЛЬТАТ</div></div>
+        </div>
+        <div class="blobdrop__powers">
+          <button class="blobdrop__power blobdrop__power--shake" data-power="shake" type="button" title="Тряска (1)">
+            <svg viewBox="0 0 46 40" fill="none" stroke="#33211a" stroke-width="3.8" stroke-linecap="round"><path d="M6 10c4-4 8-4 12 0s8 4 12 0 8-4 10-2"/><path d="M6 20c4-4 8-4 12 0s8 4 12 0 8-4 10-2"/><path d="M6 30c4-4 8-4 12 0s8 4 12 0 8-4 10-2"/></svg>
+            <span class="blobdrop__power-name">ТРЯСКА</span><span class="blobdrop__power-count">0/6</span>
+          </button>
+          <button class="blobdrop__power blobdrop__power--pop" data-power="pop" type="button" title="Лопнуть (2)">
+            <svg viewBox="0 0 46 40" fill="#fff" stroke="#33211a" stroke-width="3" stroke-linejoin="round"><path d="M23 2l3.5 9 8-5-3 9 9.5 1-8 5.5 7.5 6.5-9.5 0 1.5 9.5-8-6-5 8-2-9.5-9 3 5.5-8L4 21l9-3.5L8 9.5l9 2.5z"/></svg>
+            <span class="blobdrop__power-name">ЛОПНУТЬ</span><span class="blobdrop__power-count">0/12</span>
+          </button>
+          <button class="blobdrop__power blobdrop__power--sweep" data-power="sweep" type="button" title="Чистка (3)">
+            <svg viewBox="0 0 46 40" fill="none" stroke="#33211a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M36 3L24 20"/><path d="M20 16l9 7-6 13c-5-1-12-6-15-11z" fill="#fff"/><path d="M13 29l5-5M17 33l4-5M11 24l6-4"/></svg>
+            <span class="blobdrop__power-name">ЧИСТКА</span><span class="blobdrop__power-count">0/16</span>
+          </button>
+          <button class="blobdrop__power blobdrop__power--rainbow" data-power="rainbow" type="button" title="Радуга (4)">
+            <svg viewBox="0 0 46 40" fill="none" stroke-width="4.5" stroke-linecap="butt"><path d="M5 32a18 18 0 0 1 36 0" stroke="#ef4b4b"/><path d="M9.5 32a13.5 13.5 0 0 1 27 0" stroke="#f7b733"/><path d="M14 32a9 9 0 0 1 18 0" stroke="#3fb4e8"/><path d="M3 33.5a20 20 0 0 1 40 0" stroke="#33211a" stroke-width="2.5"/><path d="M16.5 33a6.5 6.5 0 0 1 13 0" stroke="#33211a" stroke-width="2.5"/></svg>
+            <span class="blobdrop__power-name">РАДУГА</span><span class="blobdrop__power-count">0/20</span>
+          </button>
+        </div>
+        <div class="blobdrop__community">
+          <div class="blobdrop__cjar"><canvas id="bdCjar" width="220" height="264"></canvas><span>ВАША БАНКА</span></div>
+          <div class="blobdrop__chip blobdrop__chip--plays" id="bdPlays">0 ИГР</div>
+        </div>
+      </div>
+    </div>
+    <div class="blobdrop__hint" id="bdHint">Мышь или палец — прицел, клик или отпускание — бросок. Клавиатура: ← → целиться, пробел бросить, Z отменить, 1–4 бонусы.</div>
+  </main>
+
+    <div class="blobdrop-modal blobdrop-modal--intro is-open" id="bdIntroModal" role="dialog" aria-modal="true" aria-labelledby="bdIntroTitle">
+    <div class="blobdrop-modal__card">
+      <h1 class="blobdrop-modal__title blobdrop-modal__title--h1" id="bdIntroTitle" data-op-bind='{"text":"page.title"}'>Blob Drop</h1>
+      <div class="blobdrop-modal__text blobdrop-modal__intro"><!-- onpress/content /--></div>
+      <div class="blobdrop-modal__actions">
+        <a class="blobdrop-modal__btn blobdrop-modal__btn--ghost" id="bdIntroBack" href="/docs/v2/ru/guides/demo/">НАЗАД</a>
+        <button class="blobdrop-modal__btn" id="bdIntroPlay" type="button">ИГРАТЬ</button>
+      </div>
+    </div>
+  </div>
+<div class="blobdrop-modal" id="bdOverModal" role="dialog" aria-modal="true" aria-labelledby="bdOverTitle">
+    <div class="blobdrop-modal__card">
+      <div class="blobdrop-modal__title" id="bdOverTitle">БАНКА ПЕРЕПОЛНЕНА!</div>
+      <div class="blobdrop-modal__new" id="bdOverNew">НОВЫЙ РЕКОРД!</div>
+      <div class="blobdrop-modal__big" id="bdOverScore">0</div>
+      <div class="blobdrop-modal__muted" id="bdOverBest">РЕКОРД 0</div>
+      <button class="blobdrop-modal__btn" id="bdOverRestart" type="button">ЕЩЕ РАЗ</button>
+    </div>
+  </div>
+  <div class="blobdrop-modal" id="bdRulesModal" role="dialog" aria-modal="true" aria-labelledby="bdRulesTitle">
+    <div class="blobdrop-modal__card">
+      <div class="blobdrop-modal__title" id="bdRulesTitle">КАК ИГРАТЬ</div>
+      <div class="blobdrop-modal__text">
+        <p>Ведите мышью или пальцем, чтобы прицелиться. Клик или отпущенный палец бросает каплю в банку.</p>
+        <p>Две одинаковые капли сливаются в следующую по порядку слияния. Доберитесь до золотой звезды!</p>
+        <p>Если капли слишком долго держатся выше пунктирной линии, банка переполняется и игра заканчивается.</p>
+        <p>Каждое слияние заряжает бонусы: ТРЯСКА встряхивает банку, ЛОПНУТЬ убирает каплю, на которую нажмете, ЧИСТКА убирает две самые мелкие капли, РАДУГА сливается с любой каплей.</p>
+        <p>Кнопка отмены возвращает последний бросок. Порядок капель на сегодня у всех одинаковый, рекорды хранятся в этом браузере.</p>
+        <p class="blobdrop-modal__keys">← → или A D — прицел, пробел — бросок, Z — отмена, 1–4 — бонусы, Esc — закрыть.</p>
+      </div>
+      <button class="blobdrop-modal__btn" data-bd-close type="button">ПОНЯТНО</button>
+    </div>
+  </div>
+  <div class="blobdrop-modal" id="bdTopModal" role="dialog" aria-modal="true" aria-labelledby="bdTopTitle">
+    <div class="blobdrop-modal__card">
+      <div class="blobdrop-modal__title" id="bdTopTitle">ЛУЧШИЕ РЕЗУЛЬТАТЫ</div>
+      <ul class="blobdrop-modal__list" id="bdTopList"></ul>
+      <button class="blobdrop-modal__btn" data-bd-close type="button">ЗАКРЫТЬ</button>
+    </div>
+  </div>
+
+</div>

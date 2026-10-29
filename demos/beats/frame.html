@@ -1,0 +1,157 @@
+<div class="dm" data-dm-app data-state="stopped" data-pop="open">
+  <div class="dm-shell">
+
+      <section class="dm-panel dm-top" aria-label="Транспорт">
+        <div class="dm-brand">
+          <span class="dm-brand__logo">BX-808</span>
+          <span class="dm-brand__sub">Rhythm Composer</span>
+        </div>
+
+        <div class="dm-transport">
+          <button type="button" class="dm-play" data-dm="play" aria-label="Старт" title="Старт и стоп (пробел)">
+            <svg class="dm-play__icon dm-play__icon--play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+            <svg class="dm-play__icon dm-play__icon--stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="5.5" width="13" height="13" rx="1.5"/></svg>
+            <span class="dm-play__label" data-dm="play-label">Старт</span>
+          </button>
+
+          <div class="dm-field dm-tempo">
+            <span class="dm-field__label">Темп</span>
+            <div class="dm-tempo__box">
+              <button type="button" class="dm-btn dm-btn--sq" data-dm="bpm-down" aria-label="Медленнее">&minus;</button>
+              <input class="dm-lcd" type="number" min="40" max="220" step="1" data-dm="bpm" aria-label="Темп, ударов в минуту">
+              <button type="button" class="dm-btn dm-btn--sq" data-dm="bpm-up" aria-label="Быстрее">+</button>
+              <button type="button" class="dm-btn" data-dm="tap" title="Отстучите темп (T)">Тап</button>
+            </div>
+          </div>
+
+          <label class="dm-field dm-knobfield">
+            <span class="dm-field__label">Свинг <output data-dm="swing-out">0%</output></span>
+            <input class="dm-range" type="range" min="0" max="100" step="1" data-dm="swing">
+          </label>
+
+          <label class="dm-field dm-knobfield">
+            <span class="dm-field__label">Громкость <output data-dm="master-out">80</output></span>
+            <input class="dm-range" type="range" min="0" max="100" step="1" data-dm="master">
+          </label>
+
+          <div class="dm-field">
+            <span class="dm-field__label">Шагов</span>
+            <div class="dm-seg" role="group" aria-label="Длина паттерна">
+              <button type="button" class="dm-seg__btn" data-dm="len" data-len="16">16</button>
+              <button type="button" class="dm-seg__btn" data-dm="len" data-len="32">32</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dm-panel dm-bar" aria-label="Паттерны">
+        <div class="dm-group">
+          <span class="dm-group__label">Паттерн</span>
+          <div class="dm-pats" data-dm="pats"></div>
+          <button type="button" class="dm-btn" data-dm="chain" aria-pressed="false" title="Играть паттерны по очереди (K)">Цепочка</button>
+          <button type="button" class="dm-btn" data-dm="dup" title="Скопировать в следующий слот">Копия</button>
+          <button type="button" class="dm-btn" data-dm="clear" title="Очистить текущий паттерн">Очистить</button>
+        </div>
+        <div class="dm-group">
+          <span class="dm-group__label">Стиль</span>
+          <div class="dm-presets" data-dm="presets"></div>
+          <button type="button" class="dm-btn dm-btn--accent" data-dm="random" title="Случайный паттерн (R)">Случайный</button>
+        </div>
+        <div class="dm-group dm-group--end">
+          <button type="button" class="dm-btn dm-btn--sq" data-dm="undo" title="Отменить (Ctrl+Z)" aria-label="Отменить">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+          </button>
+          <button type="button" class="dm-btn dm-btn--sq" data-dm="redo" title="Повторить (Ctrl+Shift+Z)" aria-label="Повторить">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 14 5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="dm-panel dm-seq" aria-label="Секвенсор">
+        <div class="dm-seq__scroll">
+          <div class="dm-grid" data-dm="grid" role="grid" aria-label="Сетка шагов"></div>
+        </div>
+        <p class="dm-hint">Клик по шагу: включить, второй клик: акцент, третий: выключить. Проведите мышью или пальцем по дорожке, чтобы нарисовать ритм. Клик по названию дорожки проигрывает звук.</p>
+      </section>
+
+      <div class="dm-row">
+        <section class="dm-panel dm-bass" aria-label="Басовая линия">
+          <div class="dm-panel__head">
+            <span class="dm-panel__title">Басовая линия</span>
+            <span class="dm-bass__info" data-dm="bass-info">Выберите шаг на дорожке «Бас»</span>
+          </div>
+          <div class="dm-bass__ctrl">
+            <div class="dm-bass__oct">
+              <button type="button" class="dm-btn dm-btn--sq" data-dm="oct-down" aria-label="Октава ниже">&minus;</button>
+              <span class="dm-bass__octval" data-dm="oct">Октава 2</span>
+              <button type="button" class="dm-btn dm-btn--sq" data-dm="oct-up" aria-label="Октава выше">+</button>
+            </div>
+            <div class="dm-bass__nav">
+              <button type="button" class="dm-btn" data-dm="bass-prev" aria-label="Предыдущий шаг баса">&larr;</button>
+              <button type="button" class="dm-btn" data-dm="bass-next" aria-label="Следующий шаг баса">&rarr;</button>
+              <button type="button" class="dm-btn" data-dm="bass-slide" aria-pressed="false" title="Плавный переход к следующей ноте">Глайд</button>
+              <button type="button" class="dm-btn" data-dm="tr-down" title="Весь бас на полутон ниже">&minus;1 пт</button>
+              <button type="button" class="dm-btn" data-dm="tr-up" title="Весь бас на полутон выше">+1 пт</button>
+            </div>
+          </div>
+          <div class="dm-keys" data-dm="keys" aria-label="Клавиатура нот"></div>
+        </section>
+
+        <section class="dm-panel dm-vis" aria-label="Визуализация">
+          <div class="dm-panel__head">
+            <span class="dm-panel__title">Сигнал</span>
+            <div class="dm-seg" role="group" aria-label="Вид визуализации">
+              <button type="button" class="dm-seg__btn" data-dm="vis" data-vis="scope">Волна</button>
+              <button type="button" class="dm-seg__btn" data-dm="vis" data-vis="spectrum">Спектр</button>
+            </div>
+          </div>
+          <div class="dm-scope"><canvas data-dm="canvas" aria-hidden="true"></canvas><span class="dm-scope__idle" data-dm="idle">Нажмите «Старт» или пробел</span></div>
+      <div class="dm-out" aria-label="Экспорт">
+            <div class="dm-group">
+              <span class="dm-group__label">Запись</span>
+              <select class="dm-select" data-dm="wav-mode" aria-label="Что записать">
+                <option value="4">Текущий паттерн, 4 круга</option>
+                <option value="8">Текущий паттерн, 8 кругов</option>
+                <option value="chain">Все паттерны по порядку, 2 круга</option>
+              </select>
+              <button type="button" class="dm-btn dm-btn--accent" data-dm="wav">Скачать WAV</button>
+            </div>
+            <div class="dm-group">
+              <button type="button" class="dm-btn" data-dm="share">Ссылка на бит</button>
+              <button type="button" class="dm-btn" data-dm="help" aria-expanded="false">Горячие клавиши</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <section class="dm-panel dm-help" data-dm="help-panel" hidden aria-label="Горячие клавиши">
+        <dl class="dm-help__list">
+          <div><dt><kbd>Пробел</kbd></dt><dd>старт и стоп</dd></div>
+          <div><dt><kbd>1</kbd>&ndash;<kbd>4</kbd></dt><dd>паттерн A&ndash;D</dd></div>
+          <div><dt><kbd>R</kbd></dt><dd>случайный паттерн</dd></div>
+          <div><dt><kbd>L</kbd></dt><dd>16 или 32 шага</dd></div>
+          <div><dt><kbd>K</kbd></dt><dd>цепочка паттернов</dd></div>
+          <div><dt><kbd>T</kbd></dt><dd>отстучать темп</dd></div>
+          <div><dt><kbd>&uarr;</kbd> <kbd>&darr;</kbd></dt><dd>темп &plusmn;1, с Shift &plusmn;5</dd></div>
+          <div><dt><kbd>Ctrl</kbd>+<kbd>Z</kbd></dt><dd>отменить, с Shift повторить</dd></div>
+          <div><dt><kbd>?</kbd></dt><dd>эта подсказка</dd></div>
+        </dl>
+      </section>
+
+  </div>
+
+      <div class="dm-pop" data-dm="pop" role="dialog" aria-modal="true" aria-label="О драм-машине">
+        <div class="dm-pop__card">
+          <div class="dm-pop__leds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <div class="dm-pop__text"><!-- onpress/content /--></div>
+          <p class="dm-pop__keys"><kbd>Пробел</kbd> старт и стоп, <kbd>R</kbd> случайный ритм, <kbd>?</kbd> все клавиши</p>
+          <div class="dm-pop__actions">
+            <a class="dm-btn dm-pop__back" href="/docs/v2/ru/guides/demo/" data-dm="back">Назад</a>
+            <button type="button" class="dm-btn dm-pop__go" data-dm="open">Открыть</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dm-toast" data-dm="toast" role="status" aria-live="polite"></div>
+</div>

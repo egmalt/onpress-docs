@@ -1,0 +1,173 @@
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.3.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.3.0/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5.3.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5.3.0/500.css">
+
+<div class="scan" id="scan" data-state="empty" data-op-reveal-skip>
+
+  <header class="scan__top">
+    <div class="scan__brand" aria-hidden="true">
+      <span class="scan__brand-mark"><svg viewBox="0 0 24 24"><path d="M3 8V3h5v2H5v3H3Zm13-5h5v5h-2V5h-3V3ZM3 16h2v3h3v2H3v-5Zm16 3v-3h2v5h-5v-2h3ZM6 11h12v2H6v-2Z"/></svg></span>
+      <span class="scan__brand-name">СКАН<b>ТЕКСТ</b></span>
+    </div>
+
+    <div class="scan__seg" role="radiogroup" aria-label="Язык текста" data-ocr-lang>
+      <button type="button" class="scan__seg-btn" role="radio" data-lang="rus" aria-checked="false">RU</button>
+      <button type="button" class="scan__seg-btn" role="radio" data-lang="eng" aria-checked="false">EN</button>
+      <button type="button" class="scan__seg-btn" role="radio" data-lang="rus+eng" aria-checked="true">RU+EN</button>
+    </div>
+
+    <div class="scan__top-actions">
+      <label class="scan__btn scan__btn--accent">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7V4Z"/></svg>
+        <span>Картинка</span>
+        <input class="scan__file" type="file" accept="image/*" multiple data-ocr-file>
+      </label>
+      <label class="scan__btn scan__btn--icon" title="Снять камерой">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 7.2 5H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9Zm3 5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+        <span class="scan__sr">Камера</span>
+        <input class="scan__file" type="file" accept="image/*" capture="environment" data-ocr-camera>
+      </label>
+      <button type="button" class="scan__btn scan__btn--icon" data-ocr-htoggle aria-expanded="false" title="История · H">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3a9 9 0 0 0-9 9H1l4 4 4-4H6a7 7 0 1 1 2.1 5l-1.4 1.4A9 9 0 1 0 13 3Zm-1 5v5l4.3 2.5.7-1.2-3.5-2.1V8H12Z"/></svg>
+        <span class="scan__sr">История</span>
+        <span class="scan__badge" data-ocr-hcount></span>
+      </button>
+      <button type="button" class="scan__btn scan__btn--icon" data-ocr-about title="О приложении">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 7h2v2h-2V7Zm0 4h2v6h-2v-6Zm1-9a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></svg>
+        <span class="scan__sr">О приложении</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="scan__body">
+
+    <section class="scan__table" aria-label="Картинка">
+      <div class="scan__rail" role="toolbar" aria-label="Обработка картинки">
+        <button type="button" class="scan__tool" data-ocr-rot="-90" title="Повернуть влево · Shift+R" aria-label="Повернуть влево"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 8.5 5.7 7.1A8 8 0 0 0 4 11h2a6 6 0 0 1 1.1-2.5ZM6 13H4a8 8 0 0 0 1.7 3.9l1.4-1.4A6 6 0 0 1 6 13Zm1.1 5.3A8 8 0 0 0 11 20v-2a6 6 0 0 1-2.5-1.1l-1.4 1.4ZM13 4.1V1L8.5 5.5 13 10V6.1a6 6 0 0 1 0 11.8v2a8 8 0 0 0 0-15.8Z"/></svg></button>
+        <button type="button" class="scan__tool" data-ocr-rot="90" title="Повернуть вправо · R" aria-label="Повернуть вправо"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5.5 11 1v3.1a8 8 0 0 0 0 15.8v-2a6 6 0 0 1 0-11.8V10l4.5-4.5ZM19.9 11a8 8 0 0 0-1.6-3.9l-1.4 1.4c.5.7.9 1.6 1 2.5h2Zm-6.9 6.9v2a8 8 0 0 0 3.9-1.6l-1.4-1.4c-.7.5-1.6.9-2.5 1Zm3.9-2.4 1.4 1.4a8 8 0 0 0 1.6-3.9h-2a6 6 0 0 1-1 2.5Z"/></svg></button>
+        <button type="button" class="scan__tool" data-ocr-crop title="Выделить область · C" aria-label="Выделить область" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 15h2V7a2 2 0 0 0-2-2H9v2h8v8ZM7 17V1H5v4H1v2h4v10a2 2 0 0 0 2 2h10v4h2v-4h4v-2H7Z"/></svg></button>
+        <span class="scan__rail-sep"></span>
+        <div class="scan__modes" role="radiogroup" aria-label="Цвет" data-ocr-mode>
+          <button type="button" class="scan__tool scan__tool--txt" role="radio" data-mode="color" aria-checked="true" title="Цветная">ЦВ</button>
+          <button type="button" class="scan__tool scan__tool--txt" role="radio" data-mode="gray" aria-checked="false" title="Оттенки серого">СР</button>
+          <button type="button" class="scan__tool scan__tool--txt" role="radio" data-mode="bw" aria-checked="false" title="Черно-белая">ЧБ</button>
+        </div>
+        <span class="scan__rail-sep"></span>
+        <label class="scan__contrast" title="Контраст">
+          <span class="scan__contrast-label">КОНТР</span>
+          <input type="range" min="-50" max="100" step="5" value="0" data-ocr-contrast aria-label="Контраст">
+          <output data-ocr-contrast-out>0</output>
+        </label>
+        <span class="scan__rail-sep"></span>
+        <button type="button" class="scan__tool" data-ocr-reset title="Сбросить обработку" aria-label="Сбросить обработку"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z"/></svg></button>
+      </div>
+
+      <div class="scan__view">
+        <div class="scan__drop" data-ocr-drop tabindex="0" aria-label="Перетащите картинку сюда или вставьте из буфера">
+          <div class="scan__drop-frame">
+            <span class="scan__corner scan__corner--tl"></span><span class="scan__corner scan__corner--tr"></span><span class="scan__corner scan__corner--bl"></span><span class="scan__corner scan__corner--br"></span>
+            <p class="scan__drop-title">Положите картинку на стекло</p>
+            <p class="scan__drop-hint">Перетащите файл, нажмите <kbd>Ctrl</kbd>+<kbd>V</kbd> со скриншотом в буфере или выберите файл. PNG, JPG, WebP, BMP, GIF, можно несколько.</p>
+            <div class="scan__samples">
+              <button type="button" class="scan__chip" data-ocr-sample="ru">Пример: счет на русском</button>
+              <button type="button" class="scan__chip" data-ocr-sample="en">Пример: заметки на английском</button>
+            </div>
+          </div>
+          <div class="scan__drop-over" aria-hidden="true">Отпустите</div>
+        </div>
+
+        <div class="scan__work" data-ocr-work hidden>
+          <div class="scan__stage" data-ocr-stage>
+            <canvas class="scan__canvas" data-ocr-canvas></canvas>
+            <svg class="scan__boxes" data-ocr-boxes aria-hidden="true"></svg>
+            <div class="scan__beam" aria-hidden="true"></div>
+            <div class="scan__crop" data-ocr-cropbox hidden></div>
+          </div>
+          <div class="scan__crop-hint" data-ocr-crophint hidden>Выделите область с текстом · <kbd>Esc</kbd> отмена</div>
+        </div>
+
+        <div class="scan__queue" data-ocr-queue hidden>
+          <div class="scan__queue-head">
+            <span class="scan__label">ОЧЕРЕДЬ <span data-ocr-qcount></span></span>
+            <button type="button" class="scan__link" data-ocr-runall>Распознать все</button>
+            <button type="button" class="scan__link" data-ocr-qclear>Очистить</button>
+          </div>
+          <ol class="scan__queue-list" data-ocr-qlist></ol>
+        </div>
+      </div>
+
+      <div class="scan__table-foot">
+        <span class="scan__meta" data-ocr-imeta>нет картинки</span>
+        <button type="button" class="scan__btn scan__btn--accent scan__run" data-ocr-run disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8V3h5v2H5v3H3Zm13-5h5v5h-2V5h-3V3ZM3 16h2v3h3v2H3v-5Zm16 3v-3h2v5h-5v-2h3ZM6 11h12v2H6v-2Z"/></svg>
+          <span>Сканировать</span>
+          <kbd class="scan__kbd">Ctrl+Enter</kbd>
+        </button>
+      </div>
+    </section>
+
+    <section class="scan__sheet" aria-label="Распознанный текст">
+      <div class="scan__sheet-head">
+        <span class="scan__label">ТЕКСТ</span>
+        <div class="scan__conf" data-ocr-conf hidden><span class="scan__conf-dot"></span><span data-ocr-conf-text></span></div>
+        <div class="scan__sheet-actions">
+          <button type="button" class="scan__btn" data-ocr-copy disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+            <span>Копировать</span>
+          </button>
+          <button type="button" class="scan__btn" data-ocr-download disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7ZM5 18v2h14v-2H5Z"/></svg>
+            <span>.txt</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="scan__progress" data-ocr-progress hidden>
+        <ol class="scan__steps">
+          <li class="scan__step" data-step="core">движок</li>
+          <li class="scan__step" data-step="lang">словари</li>
+          <li class="scan__step" data-step="init">подготовка</li>
+          <li class="scan__step" data-step="rec">чтение</li>
+        </ol>
+        <div class="scan__track"><div class="scan__fill" data-ocr-fill></div></div>
+        <div class="scan__progress-row">
+          <span class="scan__progress-text" data-ocr-ptext>Запуск…</span>
+          <button type="button" class="scan__link" data-ocr-cancel>Стоп</button>
+        </div>
+      </div>
+
+      <div class="scan__text" data-ocr-text contenteditable="true" spellcheck="false" role="textbox" aria-multiline="true" aria-label="Распознанный текст" data-placeholder="Здесь появится текст. Его можно править прямо тут, а наведение на слово подсветит его рамку на картинке."></div>
+
+      <div class="scan__sheet-foot">
+        <span class="scan__meta" data-ocr-tmeta></span>
+        <span class="scan__legend"><i></i>неуверенно</span>
+      </div>
+    </section>
+
+    <aside class="scan__drawer" data-ocr-history aria-label="История" hidden>
+      <div class="scan__drawer-head">
+        <span class="scan__label">ИСТОРИЯ</span>
+        <button type="button" class="scan__link" data-ocr-hclear hidden>Очистить</button>
+        <button type="button" class="scan__tool" data-ocr-hclose aria-label="Закрыть историю"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4Z"/></svg></button>
+      </div>
+      <p class="scan__empty" data-ocr-hempty>Пусто. Последние распознавания сохраняются только в этом браузере.</p>
+      <ul class="scan__history-list" data-ocr-hlist></ul>
+    </aside>
+  </div>
+
+  <div class="scan__intro" data-ocr-intro role="dialog" aria-modal="true" aria-labelledby="scan-intro-text">
+    <div class="scan__intro-card">
+      <span class="scan__corner scan__corner--tl"></span><span class="scan__corner scan__corner--tr"></span><span class="scan__corner scan__corner--bl"></span><span class="scan__corner scan__corner--br"></span>
+      <div class="scan__intro-text" id="scan-intro-text"><!-- onpress/content /--></div>
+      <div class="scan__intro-actions">
+        <button type="button" class="scan__btn scan__btn--accent scan__btn--lg" data-ocr-open>Открыть</button>
+        <a class="scan__btn scan__btn--lg" href="/docs/v2/ru/guides/demo/" data-ocr-back>Назад</a>
+      </div>
+      <p class="scan__intro-keys"><kbd>Enter</kbd> открыть · <kbd>Esc</kbd> закрыть</p>
+    </div>
+  </div>
+
+  <div class="scan__toast" data-ocr-toast role="status" aria-live="polite"></div>
+</div>
