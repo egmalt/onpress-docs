@@ -84,6 +84,12 @@ Frame writes accept `"dry_run": true` to check the markup without saving it. OnP
 
 A useful tool on its own address brings search traffic. People search for "kanban board online", "convert image to webp", "text from image", "invoice generator", and a page that solves the task right away answers that query better than an article about it. Deploy a demo to your site, put it on an address that matches the query (`/webp-converter/`, `/image-to-text/`), and write the title, `seo_title` and `seo_description` in `page.md` for that query. The tool works without a backend, so the page stays fast and costs nothing to run. Change the texts, colors and default data to fit your brand, then link the page from related articles on your site.
 
+## Private use, shared data and external APIs
+
+A demo can also be a private work tool. Set the page status to `private` and only the site administrators see it, or close the whole site with the `closed` setting and log in at `/enter/`. By default each app keeps its data in the visitor's `localStorage`, so every browser has its own copy. Shared data lives in the site data (`/data/{name}`): your agent or server writes it with the API token, and the frame renders it with `onpress/repeat` and binds. The frame script itself never gets a token, because the token carries all owner rights. A frame script can call any open HTTPS API that allows CORS; APIs with secret keys go through your agent and the site data.
+
+Details, with links to the API reference, are in the OnPress guide section "Applications" (in Russian): https://onpress.pro/docs/v2/ru/guides/apps/
+
 ## Repository layout
 
 ```

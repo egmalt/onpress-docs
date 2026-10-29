@@ -18,6 +18,10 @@ The interface is in Russian.
 - Export and import of the board as JSON
 - Light and dark theme from `prefers-color-scheme`
 
+## Use it as a work tool
+
+Publish the board page with status `private` (or close the whole site) and only site administrators can open it. The board data stays in each browser's `localStorage`, so every teammate sees their own board; move a board between browsers with JSON export and import. A shared board needs the data in the site data, written by your agent through the API. See "Private access" and "App data" in the OnPress guides: https://onpress.pro/docs/v2/ru/guides/apps/private/ and https://onpress.pro/docs/v2/ru/guides/apps/data/
+
 ## Libraries
 
 Loaded at runtime from public CDNs with pinned versions (jsDelivr unless noted). Nothing is bundled in this folder.
