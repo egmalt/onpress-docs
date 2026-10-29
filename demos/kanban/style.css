@@ -38,7 +38,9 @@ html.stk-lock,html.stk-lock body{overflow:hidden;overscroll-behavior:none}
 .stk__chip-btn:active{transform:translateY(1px)}
 .stk__chip-btn .stk__ico{width:16px;height:16px}
 .stk__board{flex:1;min-height:0;display:flex;align-items:flex-start;gap:12px;padding:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-color:rgba(255,255,255,.45) transparent}
-.stk__col{flex:0 0 288px;display:flex;flex-direction:column;max-height:100%;border-radius:14px;background:var(--list);box-shadow:0 1px 0 rgba(34,26,46,.18),0 10px 24px -14px rgba(34,26,46,.5);scroll-snap-align:start;animation:stk-in .32s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*40ms)}
+.stk__col{flex:0 0 288px;display:flex;flex-direction:column;max-height:100%;border-radius:14px;background:var(--list);box-shadow:0 1px 0 rgba(34,26,46,.18),0 10px 24px -14px rgba(34,26,46,.5);scroll-snap-align:start}
+.stk__board--enter .stk__col{animation:stk-in .32s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*40ms)}
+.stk__col--new{animation:stk-in .32s cubic-bezier(.2,.8,.2,1) both}
 .stk__col--ghost{opacity:.45}
 .stk__col-head{display:flex;align-items:center;gap:4px;padding:10px 8px 6px 6px;cursor:grab}
 .stk__col-head:active{cursor:grabbing}

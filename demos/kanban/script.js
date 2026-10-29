@@ -34,7 +34,7 @@
     grip: '<circle cx="9" cy="7" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="17" r="1"/><circle cx="15" cy="17" r="1"/>'
   };
 
-  var board, root, query = "", sortables = [];
+  var board, root, query = "", listSorts = {}, colSort = null;
 
   function uid() { return Math.random().toString(36).slice(2, 10); }
 
@@ -244,7 +244,9 @@
     del.addEventListener("click", function () {
       if (col.cards.length && !confirm("Удалить колонку «" + col.title + "» вместе с карточками (" + col.cards.length + ")?")) return;
       board.columns = board.columns.filter(function (x) { return x !== col; });
-      save(); render();
+      if (listSorts[col.id]) { listSorts[col.id].destroy(); delete listSorts[col.id]; }
+      c.remove();
+      save(); patch();
     });
     head.appendChild(del);
     c.appendChild(head);
@@ -284,12 +286,12 @@
       e.preventDefault();
       var v = ta.value.trim();
       if (!v) return;
-      col.cards.push({ id: uid(), title: v, desc: "", labels: [], due: "", checklist: [] });
-      save(); renderBoard();
-      var f = root.querySelector('.stk__col[data-id="' + col.id + '"] .stk__add');
-      if (f) f.click();
-      var list = root.querySelector('.stk__col[data-id="' + col.id + '"] .stk__list');
-      if (list) list.scrollTop = list.scrollHeight;
+      var card = { id: uid(), title: v, desc: "", labels: [], due: "", checklist: [] };
+      col.cards.push(card);
+      var list = wrap.parentNode && wrap.parentNode.querySelector(".stk__list");
+      if (list) { list.appendChild(renderCard(card)); list.scrollTop = list.scrollHeight; }
+      save(); patch();
+      ta.value = ""; ta.focus();
     });
     wrap.appendChild(open); wrap.appendChild(form);
     return wrap;
@@ -308,7 +310,7 @@
     var search = el("input");
     search.type = "search"; search.placeholder = "Поиск по карточкам и меткам"; search.value = query;
     search.setAttribute("aria-label", "Поиск");
-    search.addEventListener("input", function () { query = search.value.trim(); renderBoard(); });
+    search.addEventListener("input", function () { query = search.value.trim(); patch(); });
     sw.appendChild(search);
     bar.appendChild(sw);
     var help = btn("stk__icon stk__icon--top", "", "О демо", "help");
@@ -330,10 +332,15 @@
   }
 
   function addColumn() {
-    board.columns.push({ id: uid(), title: "Новая колонка", cards: [] });
-    save(); renderBoard();
-    var t = root.querySelectorAll(".stk__col-title");
-    var lastT = t[t.length - 1];
+    var col = { id: uid(), title: "Новая колонка", cards: [] };
+    board.columns.push(col);
+    var wrap = root.querySelector(".stk__board");
+    var node = renderColumn(col, 0);
+    node.classList.add("stk__col--new");
+    wrap.insertBefore(node, wrap.querySelector(".stk__col-add"));
+    makeListSortable(node.querySelector(".stk__list"));
+    save(); patch();
+    var lastT = node.querySelector(".stk__col-title");
     if (lastT) {
       lastT.scrollIntoView({ behavior: "smooth", inline: "end", block: "nearest" });
       lastT.focus({ preventScroll: true }); document.getSelection().selectAllChildren(lastT);
@@ -383,9 +390,42 @@
     return bar;
   }
 
+  function makeListSortable(list) {
+    listSorts[list.dataset.col] = new window.Sortable(list, {
+      group: "stk-cards", animation: 180, easing: "cubic-bezier(.2,.8,.2,1)", delay: 140, delayOnTouchOnly: true,
+      ghostClass: "stk__card--ghost", chosenClass: "stk__card--chosen", dragClass: "stk__card--drag",
+      draggable: ".stk__card", filter: ".stk__card--hidden", disabled: !!query,
+      onEnd: syncFromDom
+    });
+  }
+
+  function patch() {
+    root.querySelectorAll(".stk__col").forEach(function (cn) {
+      var col = findCol(cn.dataset.id);
+      if (!col) return;
+      var list = cn.querySelector(".stk__list");
+      var vis = 0;
+      list.querySelectorAll(".stk__card").forEach(function (n) {
+        var f = findCard(n.dataset.id);
+        var m = !!f && matches(f.card);
+        if (m) vis++;
+        n.classList.toggle("stk__card--hidden", !m);
+      });
+      var cnt = cn.querySelector(".stk__col-count");
+      var t = query ? vis + "/" + col.cards.length : String(col.cards.length);
+      if (cnt.textContent !== t) cnt.textContent = t;
+      var empty = list.querySelector(".stk__empty");
+      if (!col.cards.length && !empty) list.appendChild(el("div", "stk__empty", "Перетащите сюда карточку или добавьте новую"));
+      else if (col.cards.length && empty) empty.remove();
+    });
+    Object.keys(listSorts).forEach(function (k) { listSorts[k].option("disabled", !!query); });
+    updateStat();
+  }
+
   function renderBoard() {
-    sortables.forEach(function (s) { s.destroy(); });
-    sortables = [];
+    Object.keys(listSorts).forEach(function (k) { listSorts[k].destroy(); });
+    listSorts = {};
+    if (colSort) { colSort.destroy(); colSort = null; }
     var wrap = root.querySelector(".stk__board");
     var scroll = wrap.scrollLeft;
     wrap.textContent = "";
@@ -394,19 +434,14 @@
     adder.addEventListener("click", addColumn);
     wrap.appendChild(adder);
     wrap.scrollLeft = scroll;
-    wrap.querySelectorAll(".stk__list").forEach(function (list) {
-      sortables.push(new window.Sortable(list, {
-        group: "stk-cards", animation: 180, easing: "cubic-bezier(.2,.8,.2,1)", delay: 140, delayOnTouchOnly: true,
-        ghostClass: "stk__card--ghost", chosenClass: "stk__card--chosen", dragClass: "stk__card--drag",
-        draggable: ".stk__card", filter: ".stk__card--hidden", disabled: !!query,
-        onEnd: syncFromDom
-      }));
-    });
-    sortables.push(new window.Sortable(wrap, {
+    wrap.classList.add("stk__board--enter");
+    setTimeout(function () { wrap.classList.remove("stk__board--enter"); }, 700);
+    wrap.querySelectorAll(".stk__list").forEach(makeListSortable);
+    colSort = new window.Sortable(wrap, {
       animation: 180, handle: ".stk__col-head", draggable: ".stk__col", filter: ".stk__col-title,.stk__icon", preventOnFilter: false,
       ghostClass: "stk__col--ghost", direction: "horizontal", delay: 140, delayOnTouchOnly: true,
       onEnd: syncFromDom
-    }));
+    });
     updateStat();
   }
 
@@ -417,10 +452,10 @@
     board.columns.forEach(function (c) { cols[c.id] = c; });
     board.columns = [].map.call(root.querySelectorAll(".stk__col"), function (cn) {
       var c = cols[cn.dataset.id];
-      c.cards = [].map.call(cn.querySelectorAll(".stk__card"), function (n) { return all[n.dataset.id]; });
+      c.cards = [].map.call(cn.querySelectorAll(".stk__card"), function (n) { return all[n.dataset.id]; }).filter(Boolean);
       return c;
-    });
-    save(); renderBoard();
+    }).filter(Boolean);
+    save(); patch();
   }
 
   function render() {
@@ -575,8 +610,17 @@
     dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
     dlg.addEventListener("close", function () {
       if (!edit.hidden) { card.desc = edit.value; save(); }
-      dlg.remove(); renderBoard();
-      var n = root.querySelector('.stk__card[data-id="' + card.id + '"]');
+      dlg.remove();
+      var old = root.querySelector('.stk__card[data-id="' + card.id + '"]');
+      var cur = findCard(card.id);
+      var n = null;
+      if (cur) {
+        n = renderCard(cur.card);
+        var target = root.querySelector('.stk__list[data-col="' + cur.col.id + '"]');
+        if (old && old.parentNode === target) old.replaceWith(n);
+        else { if (old) old.remove(); if (target) target.appendChild(n); }
+      } else if (old) old.remove();
+      patch();
       if (n) n.focus({ preventScroll: true });
     });
     root.appendChild(dlg);
