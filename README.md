@@ -1,6 +1,6 @@
 # OnPress frame demos
 
-Eight full-screen web apps built as [OnPress](https://onpress.pro) frames: a kanban board, an image converter, a game, a whiteboard, a spreadsheet, a drum machine, an invoice generator and an OCR scanner. Each one is a single frame, runs entirely in the browser and keeps user data in `localStorage`. No server code, no build step.
+Nine full-screen web apps built as [OnPress](https://onpress.pro) frames: a kanban board, an image converter, a game, a whiteboard, a spreadsheet, a drum machine, an invoice generator, an OCR scanner and a web analytics dashboard. Each one is a single frame, runs entirely in the browser and keeps user data in `localStorage`. No server code, no build step.
 
 The live versions are in the demo catalog: https://onpress.pro/docs/v2/ru/guides/demo/
 
@@ -28,6 +28,7 @@ Frame guide and API reference (in Russian):
 | BX-808 (drum machine) | TR-808-style sequencer with synthesized sounds, bass line and WAV export | [live](https://onpress.pro/docs/v2/ru/guides/demo/beats/) | [demos/beats](demos/beats/) |
 | Kvitok (invoice generator) | Russian invoice form with live A4 preview, PDF, QR code and drafts | [live](https://onpress.pro/docs/v2/ru/guides/demo/invoice/) | [demos/invoice](demos/invoice/) |
 | SKANTEKST (OCR) | Text from images in Russian and English with tesseract.js | [live](https://onpress.pro/docs/v2/ru/guides/demo/ocr/) | [demos/ocr](demos/ocr/) |
+| Puls (web analytics) | Analytics dashboard: KPIs, channels, UTM with ROMI, world map, funnel, cohorts, MRR | [live](https://onpress.pro/docs/v2/ru/guides/demo/analytics/) | [demos/analytics](demos/analytics/) |
 
 The app interfaces are in Russian, like the site they run on.
 
