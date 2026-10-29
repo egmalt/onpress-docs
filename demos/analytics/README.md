@@ -37,7 +37,7 @@ Loaded at runtime from jsDelivr with pinned versions. Nothing is bundled in this
 
 ## Real data
 
-The dashboard runs on generated data. To show real numbers, let your agent or server fetch them from the analytics APIs with its own keys, write them to the site data with `PUT /data/{name}` and render them in the frame. See "External data" in the OnPress guides: https://onpress.pro/docs/v2/ru/guides/apps/external-data/
+The dashboard runs on generated data. To show real numbers, let your agent or server fetch them from the analytics APIs with its own keys, write them to the site data with `PUT /data/{name}` and render them in the frame. See "External data" in the OnPress guides: https://onpress.pro/docs/v2/ru/guides/apps/data/#vneshnie
 
 ## Files
 
