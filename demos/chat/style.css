@@ -64,7 +64,7 @@ html.sk-on, html.sk-on body { margin: 0; padding: 0; height: 100%; overflow: hid
 .sk-side__back { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; color: var(--sk-side-soft); text-decoration: none; transition: background .15s, color .15s; }
 .sk-side__back svg { width: 20px; height: 20px; }
 .sk-side__back:hover { background: var(--sk-side-hover); color: var(--sk-side-ink); }
-.sk-logo { display: flex; align-items: center; gap: 9px; font-family: var(--sk-serif); font-size: 21px; font-weight: 600; font-style: italic; letter-spacing: -0.01em; color: var(--sk-side-ink); }
+.sk-logo { display: flex; align-items: center; gap: 9px; font-family: var(--sk-serif); font-size: 18px; font-weight: 600; font-style: italic; letter-spacing: -0.01em; color: var(--sk-side-ink); white-space: nowrap; }
 .sk-logo__mark { width: 26px; height: 26px; color: #5cc2bb; }
 .sk .sk-side__close { margin-left: auto; display: none; color: var(--sk-side-soft); }
 .sk-new { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #34312c; color: var(--sk-side-ink); font-weight: 600; font-size: 14px; transition: background .15s, border-color .15s; }

@@ -1,8 +1,8 @@
-# Soroka (AI chat)
+# AI chat
 
 A ChatGPT-style chat with an OpenAI model that you can publish on an OnPress site without exposing your OpenAI API key. The answer streams in as the model writes it, Markdown in answers (code, lists, tables) is rendered safely, and conversations stay in the visitor's `localStorage`.
 
-![Soroka](screenshot.webp)
+![AI chat](screenshot.webp)
 
 Live page: https://onpress.pro/docs/v2/ru/guides/demo/chat/
 

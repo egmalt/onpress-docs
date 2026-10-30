@@ -36,7 +36,7 @@
     },
     {
       test: /поток|stream|sse|по словам|печата/i,
-      text: '## Потоковый ответ\n\nМодель пишет ответ не целиком, а по нескольку символов. С параметром `stream: true` OpenAI отправляет каждый кусочек сразу, строкой формата Server-Sent Events:\n\n```text\ndata: {"choices":[{"delta":{"content":"При"}}]}\ndata: {"choices":[{"delta":{"content":"вет"}}]}\ndata: [DONE]\n```\n\nБраузер читает такой ответ постепенно и дописывает текст на экран:\n\n```js\nconst res = await fetch(endpoint, { method: \'POST\', body: JSON.stringify({ messages }) });\nconst reader = res.body.getReader();\nconst decoder = new TextDecoder();\nlet buffer = \'\';\nwhile (true) {\n  const { value, done } = await reader.read();\n  if (done) break;\n  buffer += decoder.decode(value, { stream: true });\n  const lines = buffer.split(\'\\n\');\n  buffer = lines.pop();\n  for (const line of lines) {\n    if (!line.startsWith(\'data: \') || line === \'data: [DONE]\') continue;\n    const delta = JSON.parse(line.slice(6)).choices[0].delta.content;\n    if (delta) output.textContent += delta;\n  }\n}\n```\n\n| Без потока | С потоком |\n| --- | --- |\n| ждете весь ответ | первые слова через долю секунды |\n| один большой ответ | много маленьких строк `data:` |\n\nСорока работает именно так, только вместо `textContent` превращает Markdown в оформленный текст.'
+      text: '## Потоковый ответ\n\nМодель пишет ответ не целиком, а по нескольку символов. С параметром `stream: true` OpenAI отправляет каждый кусочек сразу, строкой формата Server-Sent Events:\n\n```text\ndata: {"choices":[{"delta":{"content":"При"}}]}\ndata: {"choices":[{"delta":{"content":"вет"}}]}\ndata: [DONE]\n```\n\nБраузер читает такой ответ постепенно и дописывает текст на экран:\n\n```js\nconst res = await fetch(endpoint, { method: \'POST\', body: JSON.stringify({ messages }) });\nconst reader = res.body.getReader();\nconst decoder = new TextDecoder();\nlet buffer = \'\';\nwhile (true) {\n  const { value, done } = await reader.read();\n  if (done) break;\n  buffer += decoder.decode(value, { stream: true });\n  const lines = buffer.split(\'\\n\');\n  buffer = lines.pop();\n  for (const line of lines) {\n    if (!line.startsWith(\'data: \') || line === \'data: [DONE]\') continue;\n    const delta = JSON.parse(line.slice(6)).choices[0].delta.content;\n    if (delta) output.textContent += delta;\n  }\n}\n```\n\n| Без потока | С потоком |\n| --- | --- |\n| ждете весь ответ | первые слова через долю секунды |\n| один большой ответ | много маленьких строк `data:` |\n\nЭтот чат работает именно так, только вместо `textContent` превращает Markdown в оформленный текст.'
     },
     {
       test: /план|стать|блог|сон/i,
@@ -44,10 +44,10 @@
     },
     {
       test: /^\s*(привет|здравств|добрый|hi|hello|хай)/i,
-      text: 'Привет! Я Сорока, чат с нейросетью. Сейчас я в **демо-режиме** и отвечаю заготовками, зато показываю, как выглядит настоящий чат: ответ печатается по мере генерации, а код и таблицы оформлены.\n\nСпросите, например, как спрятать ключ OpenAI, или попросите составить план статьи.'
+      text: 'Привет! Это чат с нейросетью. Сейчас он в **демо-режиме** и отвечает заготовками, зато показывает, как выглядит настоящий чат: ответ печатается по мере генерации, а код и таблицы оформлены.\n\nСпросите, например, как спрятать ключ OpenAI, или попросите составить план статьи.'
     }
   ];
-  var DEMO_DEFAULT = 'Сейчас Сорока работает в **демо-режиме**: ответы заготовлены заранее, а нейросеть не подключена.\n\nЧтобы чат отвечал по-настоящему, подключите свою функцию:\n\n1. Скачайте `worker.js` и `wrangler.toml` с [GitHub](' + REPO_WORKER + ').\n2. Сохраните ключ OpenAI в секретах Cloudflare: `npx wrangler secret put OPENAI_API_KEY`.\n3. Опубликуйте функцию командой `npx wrangler deploy`.\n4. Вставьте ее адрес в **Настройки → Адрес вашей функции**.\n\nКлюч останется на Cloudflare, а чат получит только текст ответа.';
+  var DEMO_DEFAULT = 'Сейчас чат работает в **демо-режиме**: ответы заготовлены заранее, а нейросеть не подключена.\n\nЧтобы чат отвечал по-настоящему, подключите свою функцию:\n\n1. Скачайте `worker.js` и `wrangler.toml` с [GitHub](' + REPO_WORKER + ').\n2. Сохраните ключ OpenAI в секретах Cloudflare: `npx wrangler secret put OPENAI_API_KEY`.\n3. Опубликуйте функцию командой `npx wrangler deploy`.\n4. Вставьте ее адрес в **Настройки → Адрес вашей функции**.\n\nКлюч останется на Cloudflare, а чат получит только текст ответа.';
 
   var ERRORS = {
     origin_not_allowed: 'Функция не принимает запросы с этого сайта. Добавьте адрес сайта в ALLOWED_ORIGINS в wrangler.toml и опубликуйте функцию снова.',
@@ -384,7 +384,7 @@
     var wrap = document.createElement('div');
     wrap.className = 'sk-hello';
     wrap.innerHTML = '<div class="sk-hello__mark">' + ICON_MARK.replace('var(--sk-ink)', 'var(--sk-bg)') + '</div><div class="sk-hello__title">О чем поболтаем?</div><div class="sk-hello__sub">' +
-      (isLive() ? 'Сорока подключена к вашей функции и отвечает моделью OpenAI.' : 'Сорока в демо-режиме: ответы заготовлены, но печатаются так же, как настоящие.') + '</div>';
+      (isLive() ? 'Чат подключен к вашей функции и отвечает моделью OpenAI.' : 'Чат в демо-режиме: ответы заготовлены, но печатаются так же, как настоящие.') + '</div>';
     var ideas = document.createElement('div');
     ideas.className = 'sk-ideas';
     IDEAS.forEach(function (it) {
@@ -401,7 +401,7 @@
   function renderNotice() {
     var n = document.createElement('div');
     n.className = 'sk-notice';
-    n.innerHTML = '<span><b>Демо-режим.</b> Сорока отвечает заготовками. Подключите свою функцию, и ответы придут от модели OpenAI.</span>';
+    n.innerHTML = '<span><b>Демо-режим.</b> Чат отвечает заготовками. Подключите свою функцию, и ответы придут от модели OpenAI.</span>';
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'sk-notice__btn'; b.textContent = 'Подключить';
     b.addEventListener('click', openConnect);
@@ -499,7 +499,7 @@
     var md = state.busy.node.querySelector('.sk-md');
     var text = state.busy.msg.content;
     if (!text) {
-      md.innerHTML = '<span class="sk-wait" aria-label="Сорока думает"><i></i><i></i><i></i></span>';
+      md.innerHTML = '<span class="sk-wait" aria-label="Модель думает"><i></i><i></i><i></i></span>';
       state.busy.node.classList.remove('is-streaming');
     } else {
       state.busy.node.classList.add('is-streaming');

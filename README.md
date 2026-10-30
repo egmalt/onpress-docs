@@ -30,7 +30,7 @@ Frame guide and API reference (in Russian):
 | SKANTEKST (OCR) | Text from images in Russian and English with tesseract.js | [live](https://onpress.pro/docs/v2/ru/guides/demo/ocr/) | [demos/ocr](demos/ocr/) |
 | Puls (web analytics) | Analytics dashboard: KPIs, channels, UTM with ROMI, world map, funnel, cohorts, MRR | [live](https://onpress.pro/docs/v2/ru/guides/demo/analytics/) | [demos/analytics](demos/analytics/) |
 | Life simulator | Text life simulator: diary by years, education, 18 professions, money, family, 141 events, achievements | [live](https://onpress.pro/docs/v2/ru/guides/demo/life/) | [demos/life](demos/life/) |
-| Soroka (AI chat) | ChatGPT-style chat with streaming answers and Markdown; the OpenAI key stays in your Cloudflare Worker | [live](https://onpress.pro/docs/v2/ru/guides/demo/chat/) | [demos/chat](demos/chat/) |
+| AI chat | ChatGPT-style chat with streaming answers and Markdown; the OpenAI key stays in your Cloudflare Worker | [live](https://onpress.pro/docs/v2/ru/guides/demo/chat/) | [demos/chat](demos/chat/) |
 | Mortgage calculator (embedded) | Calculator inside an article, inserted with `<!-- frame/demo-embed-mortgage /-->` | [live](https://onpress.pro/docs/v2/ru/guides/demo/embedded/) | [demos/embed-mortgage](demos/embed-mortgage/) |
 
 The app interfaces are in Russian, like the site they run on.
