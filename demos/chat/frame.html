@@ -1,0 +1,128 @@
+<div class="sk" id="sk" data-op-reveal-skip data-endpoint="{{frame.endpoint}}" data-page-endpoint="{{page.data.chat_endpoint}}">
+  <aside class="sk-side" id="skSide" aria-label="Переписки">
+    <div class="sk-side__top">
+      <a class="sk-side__back" href="/docs/v2/ru/guides/demo/" aria-label="Назад к каталогу демо" title="Назад к каталогу демо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+      <div class="sk-logo"><svg class="sk-logo__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 17c0-6.6 5.4-12 12-12h3a9 9 0 0 1 9 9v1a9 9 0 0 1-9 9h-4l-6 5v-5.6A12 12 0 0 1 4 17z" fill="currentColor"/><circle cx="20" cy="13" r="2.2" fill="var(--sk-side)"/><path d="M27 12.5l4 1.5-4 1.5" fill="currentColor"/></svg><span>Сорока</span></div>
+      <button class="sk-iconbtn sk-side__close" id="skSideClose" type="button" aria-label="Скрыть список">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <button class="sk-new" id="skNew" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Новый чат</span><kbd class="sk-new__kbd" id="skNewKbd">Ctrl K</kbd>
+    </button>
+    <div class="sk-list" id="skList" role="list"></div>
+    <div class="sk-side__foot">
+      <button class="sk-status" id="skStatus" type="button"></button>
+      <button class="sk-side__link" id="skSettingsBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        <span>Настройки</span>
+      </button>
+    </div>
+  </aside>
+  <div class="sk-scrim" id="skScrim" hidden></div>
+
+  <main class="sk-main">
+    <header class="sk-head">
+      <button class="sk-iconbtn sk-head__menu" id="skMenu" type="button" aria-label="Переписки">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+      <div class="sk-head__title" id="skTitle">Новый чат</div>
+      <button class="sk-badge" id="skBadge" type="button"></button>
+    </header>
+
+    <div class="sk-scroll" id="skScroll">
+      <div class="sk-thread" id="skThread" aria-live="polite"></div>
+    </div>
+    <button class="sk-down" id="skDown" type="button" aria-label="Вниз к последнему сообщению" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+    </button>
+
+    <form class="sk-composer" id="skForm" autocomplete="off">
+      <div class="sk-composer__box">
+        <textarea class="sk-composer__input" id="skInput" rows="1" maxlength="4000" placeholder="Спросите что-нибудь" aria-label="Сообщение"></textarea>
+        <button class="sk-send" id="skSend" type="submit" aria-label="Отправить" disabled>
+          <svg class="sk-send__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+          <svg class="sk-send__stop" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>
+        </button>
+      </div>
+      <div class="sk-composer__meta">
+        <span class="sk-composer__hint">Enter — отправить, Shift+Enter — новая строка, Esc — остановить</span>
+        <span class="sk-composer__count" id="skCount"></span>
+      </div>
+    </form>
+  </main>
+
+  <div class="sk-modal" id="skSettings" hidden>
+    <div class="sk-modal__bg" data-sk-close></div>
+    <div class="sk-modal__card" role="dialog" aria-modal="true" aria-labelledby="skSettingsTitle">
+      <div class="sk-modal__head">
+        <div class="sk-modal__title" id="skSettingsTitle">Настройки</div>
+        <button class="sk-iconbtn" type="button" data-sk-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <form class="sk-modal__body" id="skSettingsForm">
+        <label class="sk-field">
+          <span class="sk-field__label">Адрес вашей функции</span>
+          <input class="sk-field__input" id="skEndpoint" type="url" inputmode="url" spellcheck="false" placeholder="https://onpress-chat.ваш-аккаунт.workers.dev">
+          <span class="sk-field__help">Функция на Cloudflare Workers хранит ключ OpenAI и передает ответ модели в чат. Пустое поле — демо-режим с заготовленными ответами.</span>
+        </label>
+        <div class="sk-check" id="skCheckResult" role="status"></div>
+        <div class="sk-modal__row">
+          <button class="sk-btn sk-btn--ghost" id="skCheck" type="button">Проверить связь</button>
+          <button class="sk-btn" type="submit">Сохранить</button>
+        </div>
+        <button class="sk-textlink" id="skHowTo" type="button">Как поднять свою функцию</button>
+        <hr class="sk-modal__sep">
+        <div class="sk-modal__row sk-modal__row--split">
+          <span class="sk-field__help">Переписки хранятся только в этом браузере.</span>
+          <button class="sk-btn sk-btn--danger" id="skWipe" type="button">Удалить все чаты</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="sk-modal sk-modal--wide" id="skConnect" hidden>
+    <div class="sk-modal__bg" data-sk-close></div>
+    <div class="sk-modal__card" role="dialog" aria-modal="true" aria-labelledby="skConnectTitle">
+      <div class="sk-modal__head">
+        <div class="sk-modal__title" id="skConnectTitle">Подключить свою функцию</div>
+        <button class="sk-iconbtn" type="button" data-sk-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="sk-modal__body sk-guide">
+        <div class="sk-flow" aria-label="Схема">
+          <div class="sk-flow__node"><b>Браузер</b><span>чат на странице</span></div>
+          <div class="sk-flow__arrow">→</div>
+          <div class="sk-flow__node sk-flow__node--key"><b>Ваша функция</b><span>Cloudflare Workers, здесь ключ</span></div>
+          <div class="sk-flow__arrow">→</div>
+          <div class="sk-flow__node"><b>OpenAI</b><span>модель отвечает</span></div>
+        </div>
+        <p>Ключ OpenAI нельзя класть в код страницы: его увидит любой посетитель. Поэтому чат отправляет переписку вашей функции, функция добавляет ключ, спрашивает OpenAI и передает ответ обратно по мере генерации.</p>
+        <ol class="sk-steps">
+          <li><b>Скачайте код функции.</b> Файлы <code>worker.js</code> и <code>wrangler.toml</code> лежат на <a href="https://github.com/egmalt/onpress-docs/tree/main/demos/chat/worker" target="_blank" rel="noopener">GitHub</a>. В <code>wrangler.toml</code> впишите адрес своего сайта в <code>ALLOWED_ORIGINS</code>.</li>
+          <li><b>Войдите в Cloudflare.</b> Бесплатного аккаунта достаточно. <pre><code>npm i -D wrangler@latest
+npx wrangler login</code></pre></li>
+          <li><b>Сохраните ключ в секретах Cloudflare.</b> Wrangler спросит значение ключа и предложит создать функцию, если ее еще нет. <pre><code>npx wrangler secret put OPENAI_API_KEY</code></pre></li>
+          <li><b>Опубликуйте функцию.</b> Wrangler напечатает адрес вида <code>https://onpress-chat.ваш-аккаунт.workers.dev</code>. <pre><code>npx wrangler deploy</code></pre></li>
+          <li><b>Вставьте адрес в чат.</b> <span class="sk-guide__inline"><input class="sk-field__input" id="skEndpoint2" type="url" spellcheck="false" placeholder="https://onpress-chat.ваш-аккаунт.workers.dev"><button class="sk-btn" id="skSave2" type="button">Подключить</button></span></li>
+        </ol>
+        <p class="sk-guide__note">Функция пропускает только запросы с адресов из <code>ALLOWED_ORIGINS</code>, ограничивает длину сообщений и истории и может ограничить число сообщений в минуту с одного IP. За ответы модели платите вы по тарифу OpenAI.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sk-modal sk-modal--intro" id="skIntro">
+    <div class="sk-modal__bg"></div>
+    <div class="sk-modal__card sk-intro" role="dialog" aria-modal="true" aria-labelledby="skIntroTitle">
+      <div class="sk-intro__brand"><svg class="sk-logo__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 17c0-6.6 5.4-12 12-12h3a9 9 0 0 1 9 9v1a9 9 0 0 1-9 9h-4l-6 5v-5.6A12 12 0 0 1 4 17z" fill="currentColor"/><circle cx="20" cy="13" r="2.2" fill="var(--sk-surface)"/><path d="M27 12.5l4 1.5-4 1.5" fill="currentColor"/></svg>Сорока</div>
+      <h1 class="sk-intro__h1" id="skIntroTitle">{{page.title || Чат с нейросетью}}</h1>
+      <div class="sk-intro__text"><!-- onpress/content /--></div>
+      <div class="sk-intro__actions">
+        <a class="sk-btn sk-btn--ghost" href="/docs/v2/ru/guides/demo/">Назад</a>
+        <button class="sk-btn" id="skIntroGo" type="button">Открыть</button>
+      </div>
+      <div class="sk-intro__hint">Enter или Esc — открыть</div>
+    </div>
+  </div>
+
+  <div class="sk-toast" id="skToast" role="status" aria-live="polite"><span id="skToastText"></span><button class="sk-toast__btn" id="skToastBtn" type="button" hidden></button></div>
+</div>

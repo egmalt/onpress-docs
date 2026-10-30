@@ -1,6 +1,6 @@
 # OnPress frame demos
 
-Ten full-screen web apps built as [OnPress](https://onpress.pro) frames: a kanban board, an image converter, a game, a whiteboard, a spreadsheet, a drum machine, an invoice generator, an OCR scanner, a web analytics dashboard and a life simulator. One more demo, a mortgage calculator, shows a frame embedded inside an ordinary article. Each one is a single frame, runs entirely in the browser and keeps user data in `localStorage`. No server code, no build step.
+Eleven full-screen web apps built as [OnPress](https://onpress.pro) frames: a kanban board, an image converter, a game, a whiteboard, a spreadsheet, a drum machine, an invoice generator, an OCR scanner, a web analytics dashboard, a life simulator and an AI chat. One more demo, a mortgage calculator, shows a frame embedded inside an ordinary article. Each one is a single frame, runs entirely in the browser and keeps user data in `localStorage`. No build step; the only server code is the optional Cloudflare Worker of the AI chat, which keeps the OpenAI key out of the page.
 
 The live versions are in the demo catalog: https://onpress.pro/docs/v2/ru/guides/demo/
 
@@ -30,6 +30,7 @@ Frame guide and API reference (in Russian):
 | SKANTEKST (OCR) | Text from images in Russian and English with tesseract.js | [live](https://onpress.pro/docs/v2/ru/guides/demo/ocr/) | [demos/ocr](demos/ocr/) |
 | Puls (web analytics) | Analytics dashboard: KPIs, channels, UTM with ROMI, world map, funnel, cohorts, MRR | [live](https://onpress.pro/docs/v2/ru/guides/demo/analytics/) | [demos/analytics](demos/analytics/) |
 | Life simulator | Text life simulator: diary by years, education, 18 professions, money, family, 141 events, achievements | [live](https://onpress.pro/docs/v2/ru/guides/demo/life/) | [demos/life](demos/life/) |
+| Soroka (AI chat) | ChatGPT-style chat with streaming answers and Markdown; the OpenAI key stays in your Cloudflare Worker | [live](https://onpress.pro/docs/v2/ru/guides/demo/chat/) | [demos/chat](demos/chat/) |
 | Mortgage calculator (embedded) | Calculator inside an article, inserted with `<!-- frame/demo-embed-mortgage /-->` | [live](https://onpress.pro/docs/v2/ru/guides/demo/embedded/) | [demos/embed-mortgage](demos/embed-mortgage/) |
 
 The app interfaces are in Russian, like the site they run on.
@@ -89,7 +90,7 @@ A useful tool on its own address brings search traffic. People search for "kanba
 
 ## Private use, shared data and external APIs
 
-A demo can also be a private work tool. Set the page status to `private` and only the site administrators see it, or close the whole site with the `closed` setting and log in at `/enter/`. By default each app keeps its data in the visitor's `localStorage`, so every browser has its own copy. Shared data lives in the site data (`/data/{name}`): your agent or server writes it with the API token, and the frame renders it with `onpress/repeat` and data fields. The frame script itself never gets a token, because the token carries all owner rights. A frame script can call any open HTTPS API that allows CORS; APIs with secret keys go through your agent and the site data.
+A demo can also be a private work tool. Set the page status to `private` and only the site administrators see it, or close the whole site with the `closed` setting and log in at `/enter/`. By default each app keeps its data in the visitor's `localStorage`, so every browser has its own copy. Shared data lives in the site data (`/data/{name}`): your agent or server writes it with the API token, and the frame renders it with `onpress/repeat` and data fields. The frame script itself never gets a token, because the token carries all owner rights. A frame script can call any open HTTPS API that allows CORS; APIs with secret keys go through your agent and the site data, or through a small function of your own that holds the key, like the Cloudflare Worker of the [AI chat](demos/chat/).
 
 Details, with links to the API reference, are in the OnPress guide section "Applications" (in Russian): https://onpress.pro/docs/v2/ru/guides/apps/
 
@@ -102,6 +103,7 @@ demos/<name>/script.js       frame script
 demos/<name>/page.md         page properties and the intro popup text
 demos/embed-mortgage/example.md  sample article with the embedded calculator
 demos/<name>/README.md       what the demo does, libraries, screenshot
+demos/chat/worker/           Cloudflare Worker that keeps the OpenAI key for the AI chat
 deploy.py                    deploy any demo to your OnPress site
 ```
 
